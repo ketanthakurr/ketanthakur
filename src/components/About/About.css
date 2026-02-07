@@ -3,6 +3,8 @@
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .about-background-lines {

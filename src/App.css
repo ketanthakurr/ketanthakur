@@ -1,13 +1,21 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   /* Font family here */
+  overflow-x: hidden;
+}
+
+.App {
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .header_placeholder{
-  height: 60px;
+  height: 61px;
   width: 100%;
+  background: black;
 }

@@ -1,156 +1,162 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
 import './Testimonials.css';
 
-const testimonialData = [
+const testimonials = [
   {
-    name: "Erfan Hossain",
-    role: "Co founder at Bingo",
-    quote: "Asia Agency's data-driven strategies have completely transformed our business approach. They don't just deliver campaigns; they create comprehensive growth plans that help us connect with customers in meaningful ways.",
-    rating: 5.0,
-    image: "https://randomuser.me/api/portraits/men/32.jpg"
+    name: "Rahul Sharma",
+    role: "CEO, TechStart India",
+    text: "Ketan delivered an exceptional e-commerce platform that exceeded our expectations. His attention to detail and understanding of user experience is unmatched.",
   },
   {
-    name: "Sarah Johnson",
-    role: "CEO at TechStart",
-    quote: "Working with this team has been transformative. Their attention to detail and innovative approach exceeded all our expectations.",
-    rating: 5.0,
-    image: "https://randomuser.me/api/portraits/women/44.jpg"
+    name: "Priya Menon",
+    role: "Founder, DesignCraft",
+    text: "Working with Ketan was a game-changer for our brand. He transformed our vision into a stunning digital experience that our customers love.",
   },
   {
-    name: "Michael Chen",
-    role: "Director at Innovation Labs",
-    quote: "The results speak for themselves. Professional, creative, and always delivering on time. Highly recommended!",
-    rating: 5.0,
-    image: "https://randomuser.me/api/portraits/men/22.jpg"
-  }
+    name: "Arjun Patel",
+    role: "Product Manager, ScaleUp",
+    text: "Ketan's full-stack expertise made our product launch seamless. From frontend polish to backend architecture, he handled it all brilliantly.",
+  },
+  {
+    name: "Sneha Reddy",
+    role: "Creative Director, Artivate",
+    text: "His photography skills combined with web development created a portfolio site for us that truly stands out. Ketan is a rare multi-talented creator.",
+  },
+  {
+    name: "Vikram Singh",
+    role: "CTO, DataFlow",
+    text: "Ketan's system design approach is methodical and scalable. He built an architecture that handles our growing user base effortlessly.",
+  },
+  {
+    name: "Ananya Iyer",
+    role: "Marketing Lead, BrightEdge",
+    text: "The website Ketan built for us increased our conversion rate by 40%. His understanding of both design and development is impressive.",
+  },
 ];
 
 const Testimonials = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setInterval>>();
+
+  const animateCard = useCallback((direction: number, callback: () => void) => {
+    if (!cardRef.current || isAnimating) return;
+    setIsAnimating(true);
+    
+    cardRef.current.style.transition = 'opacity 0.25s ease-in, transform 0.25s ease-in';
+    cardRef.current.style.opacity = '0';
+    cardRef.current.style.transform = `translateX(${direction * -60}px)`;
+    
+    setTimeout(() => {
+      if (cardRef.current) {
+        cardRef.current.style.transition = 'none';
+        cardRef.current.style.transform = `translateX(${direction * 60}px)`;
+        callback();
+        
+        setTimeout(() => {
+          if (cardRef.current) {
+            cardRef.current.style.transition = 'opacity 0.35s ease-out, transform 0.35s ease-out';
+            cardRef.current.style.opacity = '1';
+            cardRef.current.style.transform = 'translateX(0)';
+            setTimeout(() => setIsAnimating(false), 350);
+          }
+        }, 50);
+      }
+    }, 250);
+  }, [isAnimating]);
+
+  const goTo = useCallback((index: number, direction: number) => {
+    if (index === current || isAnimating) return;
+    animateCard(direction, () => setCurrent(index));
+  }, [current, animateCard, isAnimating]);
+
+  const next = useCallback(() => {
+    const nextIdx = (current + 1) % testimonials.length;
+    goTo(nextIdx, 1);
+  }, [current, goTo]);
+
+  const prev = useCallback(() => {
+    const prevIdx = (current - 1 + testimonials.length) % testimonials.length;
+    goTo(prevIdx, -1);
+  }, [current, goTo]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev === testimonialData.length - 1 ? 0 : prev + 1));
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    autoPlayRef.current = setInterval(next, 5000);
+    return () => clearInterval(autoPlayRef.current);
+  }, [next]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? testimonialData.length - 1 : prev - 1));
+  const resetAutoPlay = () => {
+    clearInterval(autoPlayRef.current);
+    autoPlayRef.current = setInterval(next, 5000);
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev === testimonialData.length - 1 ? 0 : prev + 1));
-  };
+  const t = testimonials[current];
 
   return (
-    <section className="testimonials-section">
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="testimonials-title"
-      >
-        <span className="title-green">Our partners</span> find numerous<br />
-        reasons to love us
-      </motion.h2>
+    <section className="testimonials-section-new">
+      <div className="testimonials-container-new">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="testimonials-hero-new"
+        >
+          <p className="testimonials-badge-new">Testimonials</p>
+          <h1 className="testimonials-title-new">
+            WHAT PEOPLE<br />
+            <span>SAY.</span>
+          </h1>
+        </motion.div>
 
-      <div className="testimonials-carousel">
-        <div className="testimonial-cards-wrapper">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-            >
-              <TestimonialCard data={testimonialData[currentIndex]} />
-            </motion.div>
-          </AnimatePresence>
-          <TestimonialCard 
-            data={testimonialData[(currentIndex + 1) % testimonialData.length]} 
-            isReflection 
-          />
-        </div>
-
-        <div className="carousel-controls">
-          <button onClick={handlePrev} className="carousel-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="testimonials-carousel-new"
+        >
+          <div ref={cardRef} className="testimonial-card-new">
+            <svg className="quote-icon" width="40" height="40" viewBox="0 0 24 24" fill="none">
+              <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" fill="currentColor"/>
+              <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" fill="currentColor"/>
             </svg>
-          </button>
-          <button onClick={handleNext} className="carousel-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-        </div>
+            <p className="testimonial-text">"{t.text}"</p>
+            <div className="testimonial-author">
+              <p className="author-name">{t.name}</p>
+              <p className="author-role">{t.role}</p>
+            </div>
+          </div>
 
-        <div className="carousel-progress">
-          <div 
-            className="progress-bar" 
-            style={{ width: `${((currentIndex + 1) / testimonialData.length) * 100}%` }}
-          />
-        </div>
+          <div className="carousel-controls-new">
+            <div className="carousel-dots">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    goTo(i, i > current ? 1 : -1);
+                    resetAutoPlay();
+                  }}
+                  className={`dot ${i === current ? 'active' : ''}`}
+                />
+              ))}
+            </div>
+            <div className="carousel-arrows">
+              <button onClick={() => { prev(); resetAutoPlay(); }} className="arrow-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18L9 12L15 6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button onClick={() => { next(); resetAutoPlay(); }} className="arrow-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18L15 12L9 6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
-  );
-};
-
-const TestimonialCard = ({ data, isReflection = false }: { data: typeof testimonialData[0], isReflection?: boolean }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setMousePosition({ x, y });
-  };
-
-  return (
-    <motion.div
-      className={`testimonial-card ${isReflection ? 'reflection' : ''}`}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-    >
-      {isHovered && !isReflection && (
-        <div
-          className="card-reflection"
-          style={{
-            background: `radial-gradient(circle 200px at ${mousePosition.x}% ${mousePosition.y}%, rgba(255, 255, 255, 0.15), transparent)`,
-          }}
-        />
-      )}
-      
-      <div className="card-header">
-        <div className="card-avatar">
-          <img src={data.image} alt={data.name} />
-        </div>
-        <div className="card-info">
-          <h3>{data.name}</h3>
-          <p>{data.role}</p>
-        </div>
-      </div>
-
-      <p className="card-quote">{data.quote}</p>
-
-      <div className="card-rating">
-        <span className="rating-icon">G</span>
-        <div className="stars">
-          {[...Array(5)].map((_, i) => (
-            <span key={i}>★</span>
-          ))}
-        </div>
-        <span className="rating-value">{data.rating}</span>
-      </div>
-    </motion.div>
   );
 };
 

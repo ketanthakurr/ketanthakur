@@ -1,24 +1,21 @@
-.gallery-section {
-  min-height: 100vh;
+#photography {
   background: #0a0a0a;
-  color: white;
-  padding: 6rem 2rem 4rem;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
-.gallery-container {
+.gallery-header {
+  padding: 6rem 1.5rem;
   max-width: 1400px;
   margin: 0 auto;
-}
-
-.gallery-hero {
-  margin-bottom: 3rem;
 }
 
 .gallery-badge {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.3em;
-  color: #4ade80;
+  color: #ff6b35;
   font-weight: 600;
   margin-bottom: 1rem;
 }
@@ -29,65 +26,63 @@
   text-transform: uppercase;
   line-height: 0.9;
   color: white;
+  margin: 0;
 }
 
 .gallery-title span {
-  color: #4ade80;
+  color: #ff6b35;
 }
 
-.gallery-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 3rem;
-}
-
-.filter-btn {
-  padding: 0.5rem 1.25rem;
-  border-radius: 2rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
-  color: #888;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.filter-btn:hover {
-  border-color: #4ade80;
-  color: #4ade80;
-}
-
-.filter-btn.active {
-  background: #4ade80;
-  color: #0a0a0a;
-  border-color: #4ade80;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 4rem;
-}
-
-.gallery-item {
+.gallery-scroll {
+  background: rgba(255, 255, 255, 0.02);
+  overflow-x: hidden;
   position: relative;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  aspect-ratio: 4/3;
+  width: 100%;
 }
 
-.gallery-item img {
+.gallery-scroll > div {
+  display: flex !important;
+  flex-direction: row !important;
+  will-change: transform;
+}
+
+.gallery-slide {
+  flex-shrink: 0;
+  width: 80vw;
+  height: 70vh;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .gallery-slide {
+    width: 92vw;
+    padding: 0.5rem;
+  }
+
+  .gallery-slide-inner {
+    aspect-ratio: 3/4;
+    height: auto;
+    max-height: 75vh;
+  }
+}
+
+.gallery-slide-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.gallery-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
-.gallery-item:hover img {
+.gallery-slide:hover .gallery-image {
   transform: scale(1.05);
 }
 
@@ -99,24 +94,24 @@
   transition: opacity 0.3s ease;
   display: flex;
   align-items: flex-end;
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
-.gallery-item:hover .gallery-overlay {
+.gallery-slide:hover .gallery-overlay {
   opacity: 1;
 }
 
 .photo-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: white;
   margin: 0 0 0.25rem 0;
 }
 
 .photo-category {
-  font-size: 0.9rem;
-  color: #4ade80;
-  margin: 0;
+  font-size: 0.875rem;
+  color: #ff6b35;
+  margin: 0.25rem 0 0 0;
 }
 
 .lightbox {
@@ -146,7 +141,7 @@
 }
 
 .lightbox-close:hover {
-  color: #4ade80;
+  color: #ff6b35;
 }
 
 .lightbox-image {
@@ -156,19 +151,28 @@
   border-radius: 0.75rem;
 }
 
-@media (max-width: 1024px) {
-  .gallery-title {
-    font-size: 3.5rem;
+@media (min-width: 768px) {
+  .gallery-slide {
+    width: 50vw;
   }
 
-  .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+  .gallery-title {
+    font-size: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-slide {
+    width: 35vw;
+  }
+
+  .gallery-title {
+    font-size: 8rem;
   }
 }
 
 @media (max-width: 768px) {
-  .gallery-section {
+  .gallery-header {
     padding: 4rem 1.5rem 3rem;
   }
 
@@ -176,35 +180,11 @@
     font-size: 2.5rem;
   }
 
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
   .lightbox {
     padding: 1.5rem;
   }
-}
 
-.load-more-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
-}
-
-.load-more-btn {
-  padding: 1rem 2.5rem;
-  border-radius: 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: 2px solid #4ade80;
-  background: transparent;
-  color: #4ade80;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.load-more-btn:hover {
-  background: #4ade80;
-  color: #0a0a0a;
-  transform: translateY(-2px);
+  .photo-title {
+    font-size: 1.25rem;
+  }
 }

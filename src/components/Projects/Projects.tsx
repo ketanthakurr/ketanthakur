@@ -117,7 +117,7 @@ const ProjectRow = ({ project }: { project: Project }) => {
 
 const Projects = () => {
   return (
-    <section className="projects-section">
+    <section id="projects" className="projects-section">
       <div className="projects-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
