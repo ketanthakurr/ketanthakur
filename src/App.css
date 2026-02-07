@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* Font family here */
+}
+
+.header_placeholder{
+  height: 60px;
+  width: 100%;
+}

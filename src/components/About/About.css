@@ -1,0 +1,122 @@
+.about {
+  padding: 80px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.about-background-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-line {
+  width: 1px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 80px;
+  align-items: start;
+}
+
+.about-content {
+  padding-right: 40px;
+}
+
+.about-title {
+  color: #ff6b35;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+
+.about-description {
+  font-size: 32px;
+  line-height: 1.5;
+  color: #000;
+  font-weight: 400;
+}
+
+.about-image {
+  /* max-width: 400px; */
+  width: 100%;
+  height: 400px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  border-radius: 8px;
+}
+
+.about-roles {
+  margin-top: 60px;
+}
+
+.role-title {
+  font-size: clamp(50px, 8vw, 90px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.role-black {
+  color: #000;
+}
+
+.role-orange {
+  color: #ff6b35;
+}
+
+@media (max-width: 933px) {
+
+  .about-content {
+    padding-right: 0;
+  }
+
+  .about-description {
+    font-size: 30px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .about-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-content {
+    padding-right: 0;
+  }
+
+  .about-description {
+    font-size: 24px;
+  }
+
+  .role-title {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 576px) {
+  .role-title {
+    font-size: 32px;
+  }
+}

@@ -1,0 +1,215 @@
+.projects-section {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: white;
+  padding: 6rem 2rem;
+}
+
+.projects-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.projects-hero {
+  margin-bottom: 6rem;
+}
+
+.projects-badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #4ade80;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.projects-title {
+  font-size: 5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: white;
+}
+
+.projects-title span {
+  color: #4ade80;
+}
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3.5rem 0;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.project-row:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-preview {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  width: 500px;
+  height: 350px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.project-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.project-main {
+  flex: 1;
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.project-header h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.project-row.hovered .project-header h3 {
+  color: #4ade80;
+}
+
+.arrow-icon {
+  color: #888;
+  transition: all 0.3s ease;
+}
+
+.project-row.hovered .arrow-icon {
+  color: #4ade80;
+  transform: translate(4px, -4px);
+}
+
+.project-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #888;
+  max-width: 600px;
+  margin: 0 0 1rem 0;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4ade80;
+  font-weight: 600;
+  text-decoration: none;
+  transition: gap 0.3s ease;
+}
+
+.project-link:hover {
+  gap: 0.75rem;
+  text-decoration: underline;
+}
+
+.project-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.project-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.project-year {
+  font-size: 0.9rem;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.project-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tag {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+@media (max-width: 1024px) {
+  .projects-title {
+    font-size: 3.5rem;
+  }
+
+  .project-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .project-meta {
+    align-items: flex-start;
+  }
+
+  .project-tags {
+    justify-content: flex-start;
+  }
+
+  .project-preview {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .projects-title {
+    font-size: 2.5rem;
+  }
+
+  .project-header h3 {
+    font-size: 1.75rem;
+  }
+
+  .project-description {
+    font-size: 1rem;
+  }
+
+  .project-row {
+    padding: 2.5rem 0;
+  }
+}

@@ -1,0 +1,177 @@
+.hero_section {
+  width: 100dvw;
+  height: calc(100dvh - 60px);
+  background-color: #0a0a0a;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero_grid {
+  background-color: rgb(247, 248, 232);
+  background-image:
+    linear-gradient(#9c9793 1px, transparent 1px),
+    linear-gradient(90deg, #9c9793 1px, transparent 1px);
+  background-size: 60px 60px;
+  border-top-right-radius: 500px;
+  border-bottom-right-radius: 500px;
+  width: 90dvw;
+  height: 50dvh;
+  top: 35%;
+  position: absolute;
+}
+
+.hero_cta{
+  width: 90%;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.hero_image_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+  border-top-right-radius: 500px;
+  border-bottom-right-radius: 500px;
+}
+
+.hero_content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 2;
+  position: relative;
+}
+
+.hero_cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hero_cta_text {
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  font-size: 1rem;
+  font-family: "Oswald";
+  letter-spacing: 1px;
+}
+
+.hero_content_heading {
+  font-size: clamp(5rem, 10vw, 15rem);
+  font-family: "Oswald";
+}
+
+.hero_image {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  object-position: bottom;
+  filter: grayscale(1);
+}
+
+.hero_chip_image {
+  width: 180px;
+  height: 180px;
+  position: absolute;
+}
+
+.chip1 {
+  top: -10%;
+  left: 5%;
+  transform: rotate(20deg);
+}
+
+.chip2 {
+  top: 69%;
+  left: 80%;
+}
+
+.chip3 {
+  top: 0%;
+  left: 70%;
+  width: 290px;
+  height: 290px;
+  transform: rotate(10deg);
+}
+
+.chip4 {
+  top: 40%;
+  left: 15%;
+  width: 250px;
+  height: 250px;
+  transform: rotate(-20deg);
+}
+
+
+/* Chip responsiveness */
+@media screen and (max-width: 1024px) {
+  .hero_chip_image {
+    width: 130px;
+    height: 130px;
+    position: absolute;
+  }
+
+  .chip1 {
+    top: -10%;
+    left: 5%;
+    transform: rotate(20deg);
+  }
+
+  .chip2 {
+    top: 70%;
+    left: 75%;
+  }
+
+  .chip3 {
+    top: 0%;
+    left: 70%;
+    width: 220px;
+    height: 220px;
+    transform: rotate(10deg);
+  }
+
+  .chip4 {
+    top: 40%;
+    left: 15%;
+    width: 200px;
+    height: 200px;
+    transform: rotate(-20deg);
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .chip1 {
+    top: -10%;
+    left: 5%;
+    width: 100px;
+    height: 100px;
+    transform: rotate(20deg);
+  }
+
+  .chip2 {
+    top: 70%;
+    left: 75%;
+    width: 100px;
+    height: 100px;
+  }
+
+  .chip3 {
+    top: 10%;
+    left: 75%;
+    width: 120px;
+    height: 120px;
+  }
+
+  .chip4 {
+    display: none;
+  }
+}
