@@ -124,7 +124,7 @@ const About = () => {
           </p>
         </div>
         <div className="about-image">
-          <div className="image-placeholder"></div>
+          <img src="/me/ketan.jpg" alt="Ketan Thakur" className="image-placeholder" />
         </div>
       </div>
       <div className="about-roles">

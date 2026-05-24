@@ -104,6 +104,8 @@
   height: 100%;
   background: #e0e0e0;
   border-radius: 8px;
+  object-fit: cover;
+  display: block;
 }
 
 .about-roles {
