@@ -2,63 +2,301 @@ import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import './Contact.css';
 
-const socials = [
-  { name: "Twitter", preview: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=600&q=80" },
-  { name: "Instagram", preview: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80" },
-  { name: "LinkedIn", preview: "https://images.unsplash.com/photo-1611944212129-29977ae1398c?w=600&q=80" },
-  { name: "Behance", preview: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&q=80" },
+interface Social {
+  name: string;
+  handle: string;
+  url: string;
+  brand: string;
+  brandText: string;
+  slug: string;
+  bg: string;
+}
+
+const socials: Social[] = [
+  {
+    name: 'Gmail',
+    handle: 'ketanthakur603@gmail.com',
+    url: 'mailto:ketanthakur603@gmail.com',
+    brand: '#EA4335',
+    brandText: '#fff',
+    slug: 'gmail',
+    bg: 'conic-gradient(from 210deg at 50% 50%, #4285F4 0%, #34A853 25%, #FBBC05 55%, #EA4335 80%, #4285F4 100%)',
+  },
+  {
+    name: 'Instagram',
+    handle: '@ketanthakur',
+    url: 'https://instagram.com/',
+    brand: '#E1306C',
+    brandText: '#fff',
+    slug: 'instagram',
+    bg: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+  },
+  {
+    name: 'WhatsApp',
+    handle: '+91 84487 21488',
+    url: 'https://wa.me/918448721488',
+    brand: '#25D366',
+    brandText: '#0a0a0a',
+    slug: 'whatsapp',
+    bg: '#25D366',
+  },
+  {
+    name: 'X',
+    handle: '@ketanthakur',
+    url: 'https://x.com/',
+    brand: '#0a0a0a',
+    brandText: '#fff',
+    slug: 'x',
+    bg: '#0a0a0a',
+  },
+  {
+    name: 'LinkedIn',
+    handle: 'in/ketanthakur',
+    url: 'https://linkedin.com/',
+    brand: '#0A66C2',
+    brandText: '#fff',
+    slug: 'linkedin',
+    bg: '#0A66C2',
+  },
 ];
 
-const SocialLink = ({ social }: { social: typeof socials[0] }) => {
-  const [hovered, setHovered] = useState(false);
-  const imgRef = useRef<HTMLDivElement>(null);
-  const linkRef = useRef<HTMLAnchorElement>(null);
+// Inline SVGs for slugs Simple Icons doesn't reliably serve (LinkedIn removed from SI).
+const inlineSocialIcon = (slug: string) => {
+  switch (slug) {
+    case 'linkedin':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+        </svg>
+      );
+    case 'x':
+      return (
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
 
-  useEffect(() => {
-    if (!imgRef.current) return;
-    imgRef.current.style.opacity = hovered ? '1' : '0';
-    imgRef.current.style.transform = hovered ? 'scale(1)' : 'scale(0.95)';
-  }, [hovered]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!imgRef.current || !linkRef.current) return;
-    const rect = linkRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - 100;
-    const y = e.clientY - rect.top - 75;
-    imgRef.current.style.left = `${x}px`;
-    imgRef.current.style.top = `${y}px`;
-  };
-
+const SocialPill = ({ social }: { social: Social }) => {
+  const isEmail = social.slug === 'gmail';
+  const inline = inlineSocialIcon(social.slug);
   return (
     <a
-      ref={linkRef}
-      href="#"
-      className="social-link"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onMouseMove={handleMouseMove}
+      href={social.url}
+      target={isEmail ? undefined : '_blank'}
+      rel="noopener noreferrer"
+      className="social-pill"
+      style={{
+        ['--brand' as string]: social.brand,
+        ['--brand-bg' as string]: social.bg,
+      } as React.CSSProperties}
+      aria-label={social.name}
     >
-      {social.preview && (
-        <div ref={imgRef} className="social-preview">
-          <img src={social.preview} alt={`${social.name} preview`} />
-        </div>
-      )}
-      {social.name}
+      <span className="social-pill-icon" aria-hidden="true">
+        {inline ?? <img src={`https://cdn.simpleicons.org/${social.slug}`} alt="" loading="lazy" />}
+      </span>
+      <span className="social-pill-tip">{social.name}</span>
     </a>
+  );
+};
+
+/** Mascot — chunky SVG character with eyes that track the cursor across the section. */
+const Mascot = ({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) => {
+  const mascotRef = useRef<HTMLDivElement>(null);
+  const leftPupilRef = useRef<SVGCircleElement>(null);
+  const rightPupilRef = useRef<SVGCircleElement>(null);
+  const mouthRef = useRef<SVGPathElement>(null);
+  const [typing, setTyping] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let raf = 0;
+    let targetLX = 0, targetLY = 0, targetRX = 0, targetRY = 0;
+    let curLX = 0, curLY = 0, curRX = 0, curRY = 0;
+    const maxOffset = 4;
+
+    const handleMove = (e: MouseEvent) => {
+      const l = leftPupilRef.current?.getBoundingClientRect();
+      const r = rightPupilRef.current?.getBoundingClientRect();
+      if (!l || !r) return;
+
+      const lcx = l.left + l.width / 2;
+      const lcy = l.top + l.height / 2;
+      const rcx = r.left + r.width / 2;
+      const rcy = r.top + r.height / 2;
+
+      const la = Math.atan2(e.clientY - lcy, e.clientX - lcx);
+      const ra = Math.atan2(e.clientY - rcy, e.clientX - rcx);
+
+      const ldist = Math.hypot(e.clientX - lcx, e.clientY - lcy);
+      const rdist = Math.hypot(e.clientX - rcx, e.clientY - rcy);
+
+      const lk = Math.min(1, ldist / 220);
+      const rk = Math.min(1, rdist / 220);
+
+      targetLX = Math.cos(la) * maxOffset * lk;
+      targetLY = Math.sin(la) * maxOffset * lk;
+      targetRX = Math.cos(ra) * maxOffset * rk;
+      targetRY = Math.sin(ra) * maxOffset * rk;
+
+      // Floaters parallax
+      const floaters = section.querySelectorAll<HTMLElement>('.contact-floater');
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      const dx = (e.clientX - cx) / cx;
+      const dy = (e.clientY - cy) / cy;
+      floaters.forEach((f, i) => {
+        const depth = (i + 1) * 10;
+        f.style.transform = `translate3d(${dx * depth}px, ${dy * depth}px, 0) rotate(${dx * (i % 2 ? 8 : -8)}deg)`;
+      });
+    };
+
+    const tick = () => {
+      curLX += (targetLX - curLX) * 0.18;
+      curLY += (targetLY - curLY) * 0.18;
+      curRX += (targetRX - curRX) * 0.18;
+      curRY += (targetRY - curRY) * 0.18;
+      if (leftPupilRef.current) leftPupilRef.current.setAttribute('transform', `translate(${curLX} ${curLY})`);
+      if (rightPupilRef.current) rightPupilRef.current.setAttribute('transform', `translate(${curRX} ${curRY})`);
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+
+    const blink = setInterval(() => {
+      mascotRef.current?.classList.add('mascot-blink');
+      setTimeout(() => mascotRef.current?.classList.remove('mascot-blink'), 160);
+    }, 4200);
+
+    section.addEventListener('mousemove', handleMove);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearInterval(blink);
+      section.removeEventListener('mousemove', handleMove);
+    };
+  }, [sectionRef]);
+
+  useEffect(() => {
+    if (mouthRef.current) {
+      mouthRef.current.setAttribute(
+        'd',
+        typing
+          ? 'M 38 70 Q 50 84 62 70'
+          : 'M 38 72 Q 50 78 62 72'
+      );
+    }
+  }, [typing]);
+
+  useEffect(() => {
+    const onTyping = (e: Event) => setTyping((e as CustomEvent).detail);
+    const onHappy = () => {
+      mascotRef.current?.classList.add('mascot-happy');
+      setTimeout(() => mascotRef.current?.classList.remove('mascot-happy'), 1100);
+    };
+    window.addEventListener('mascot:typing', onTyping);
+    window.addEventListener('mascot:happy', onHappy);
+    return () => {
+      window.removeEventListener('mascot:typing', onTyping);
+      window.removeEventListener('mascot:happy', onHappy);
+    };
+  }, []);
+
+  return (
+    <div ref={mascotRef} className="mascot" aria-hidden="true">
+      <svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="100" rx="32" ry="4" fill="rgba(0,0,0,0.15)" />
+        <path
+          d="M 18 36 Q 18 12 50 12 Q 82 12 82 36 L 82 70 Q 82 92 50 92 Q 18 92 18 70 Z"
+          fill="#ff6b35"
+        />
+        <path
+          d="M 28 22 Q 36 14 50 14"
+          stroke="rgba(255,255,255,0.35)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <line x1="50" y1="12" x2="50" y2="2" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="50" cy="2" r="3" fill="#0a0a0a" />
+        <circle cx="38" cy="46" r="9" fill="#fff" />
+        <circle cx="62" cy="46" r="9" fill="#fff" />
+        <circle ref={leftPupilRef} cx="38" cy="46" r="4" fill="#0a0a0a" />
+        <circle ref={rightPupilRef} cx="62" cy="46" r="4" fill="#0a0a0a" />
+        <circle cx="28" cy="60" r="3" fill="rgba(255,255,255,0.35)" />
+        <circle cx="72" cy="60" r="3" fill="rgba(255,255,255,0.35)" />
+        <path
+          ref={mouthRef}
+          d="M 38 72 Q 50 78 62 72"
+          stroke="#0a0a0a"
+          strokeWidth="3"
+          strokeLinecap="round"
+          fill="none"
+        />
+      </svg>
+      <div className={`mascot-bubble ${typing ? 'is-typing' : ''}`}>
+        {typing ? <span className="bubble-dots"><i/><i/><i/></span> : <span>Say hi!</span>}
+      </div>
+    </div>
   );
 };
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [burst, setBurst] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thanks for reaching out! I'll get back to you soon.");
-    setForm({ name: "", email: "", message: "" });
+    window.dispatchEvent(new CustomEvent('mascot:happy'));
+    setBurst(true);
+    setTimeout(() => setBurst(false), 1200);
+    setTimeout(() => {
+      alert("Thanks for reaching out! I'll get back to you soon.");
+      setForm({ name: "", email: "", message: "" });
+    }, 400);
   };
 
+  const broadcastTyping = (on: boolean) => {
+    window.dispatchEvent(new CustomEvent('mascot:typing', { detail: on }));
+  };
+
+  useEffect(() => {
+    const btn = submitRef.current;
+    if (!btn) return;
+    const handleMove = (e: MouseEvent) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+    };
+    const reset = () => { btn.style.transform = ''; };
+    btn.addEventListener('mousemove', handleMove);
+    btn.addEventListener('mouseleave', reset);
+    return () => {
+      btn.removeEventListener('mousemove', handleMove);
+      btn.removeEventListener('mouseleave', reset);
+    };
+  }, []);
+
   return (
-    <section className="contact-section" id="contact">
+    <section ref={sectionRef} className="contact-section" id="contact">
+      <div className="contact-floaters" aria-hidden="true">
+        <div className="contact-floater floater-ring" />
+        <div className="contact-floater floater-square" />
+        <div className="contact-floater floater-blob" />
+        <div className="contact-floater floater-plus">
+          <svg viewBox="0 0 40 40"><path d="M20 4v32M4 20h32" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/></svg>
+        </div>
+        <div className="contact-floater floater-star">
+          <svg viewBox="0 0 40 40"><path d="M20 2 L24 16 L38 20 L24 24 L20 38 L16 24 L2 20 L16 16 Z" fill="currentColor"/></svg>
+        </div>
+      </div>
+
       <div className="contact-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,113 +304,107 @@ const Contact = () => {
           viewport={{ once: true }}
           className="contact-hero"
         >
-          <p className="contact-badge">Contact</p>
+          <p className="contact-badge">Contact · 04 channels</p>
           <h1 className="contact-title">
             LET'S BUILD<br />
             <span>SOMETHING.</span>
           </h1>
+          <p className="contact-lede">
+            Email, DMs, carrier pigeons — pick a lane. Replies usually within a day.
+          </p>
         </motion.div>
 
-        <div className="contact-content">
-          <motion.form
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            onSubmit={handleSubmit}
-            className="contact-form"
-          >
-            <div className="form-group">
-              <label>Your Name</label>
-              <input
-                type="text"
-                required
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="contact-card form-card"
+        >
+          <Mascot sectionRef={sectionRef} />
+
+          <div className="form-card-head">
+            <span className="form-card-tag">Drop a Line</span>
+            <h3 className="form-card-title">Got a brief?</h3>
+          </div>
+
+          <form onSubmit={handleSubmit} className="contact-form">
+            <div className="form-row form-row-2">
+              <div className="form-group">
+                <label>Name</label>
+                <input
+                  type="text" required
+                  placeholder="Jane Doe"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  onFocus={() => broadcastTyping(true)}
+                  onBlur={() => broadcastTyping(false)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email" required
+                  placeholder="jane@studio.com"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onFocus={() => broadcastTyping(true)}
+                  onBlur={() => broadcastTyping(false)}
+                />
+              </div>
             </div>
             <div className="form-group">
-              <label>Email Address</label>
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-              />
-            </div>
-            <div className="form-group">
-              <label>Message</label>
+              <label>Tell me about it</label>
               <textarea
                 required
-                rows={5}
+                rows={3}
+                placeholder="A new product, a weird side-project, a redesign that scares you…"
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
+                onFocus={() => broadcastTyping(true)}
+                onBlur={() => broadcastTyping(false)}
               />
             </div>
-            <button type="submit" className="submit-btn">
-              Send Message
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </motion.form>
+            <div className="submit-wrap">
+              <button ref={submitRef} type="submit" className="submit-btn">
+                <span className="submit-btn-label">Send Message</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              {burst && (
+                <div className="submit-burst" aria-hidden="true">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <span key={i} className="burst-bit" style={{ ['--a' as string]: `${i * 30}deg` }} />
+                  ))}
+                  <span className="burst-heart">♥</span>
+                </div>
+              )}
+            </div>
+          </form>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="contact-info"
-          >
-            <p className="info-text">
-              Have a project in mind? I'd love to hear about it. Drop me a message and let's create something amazing together.
-            </p>
-            <div className="info-items">
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M22 6l-10 7L2 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span>ketanthakur603@gmail.com</span>
-              </div>
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span>+91 84487 21488</span>
-              </div>
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span>Sirmaur, Himachal Pradesh</span>
-              </div>
-              <div className="info-item">
-                <div className="info-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span>Gurugram, Haryana</span>
-              </div>
+          {/* Compact socials row */}
+          <div className="form-socials">
+            <span className="form-socials-label">or reach me on —</span>
+            <div className="form-socials-row">
+              {socials.map((s) => (
+                <SocialPill key={s.name} social={s} />
+              ))}
             </div>
-            <div className="socials">
-              <p className="socials-label">Socials</p>
-              <div className="social-links">
-                {socials.map((s) => (
-                  <SocialLink key={s.name} social={s} />
-                ))}
-              </div>
+          </div>
+
+          <div className="form-card-foot">
+            <div className="form-foot-row">
+              <span className="form-foot-key">Based in</span>
+              <span className="form-foot-val">Gurugram · Sirmaur, IN</span>
             </div>
-          </motion.div>
-        </div>
+            <div className="form-foot-row">
+              <span className="form-foot-key">Status</span>
+              <span className="form-foot-val">
+                <span className="status-dot" /> Available for work
+              </span>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

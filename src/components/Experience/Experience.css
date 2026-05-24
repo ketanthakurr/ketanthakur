@@ -1,0 +1,341 @@
+.timeline-section {
+  background: #0a0a0a;
+  color: #fff;
+  padding: 8rem 2rem;
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+.timeline-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255, 107, 53, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(255, 107, 53, 0.06), transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.timeline-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+.timeline-header {
+  margin-bottom: 5rem;
+  max-width: 900px;
+}
+
+.timeline-badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #ff6b35;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.timeline-title {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: #fff;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.01em;
+}
+
+.timeline-title span {
+  color: #ff6b35;
+}
+
+.timeline-lede {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #888;
+  max-width: 56ch;
+  margin: 0;
+}
+
+/* ---------- Rail ---------- */
+.timeline-rail {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.timeline-spine {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.timeline-spine-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, #ff6b35 12%, #ff6b35 88%, transparent 100%);
+  transform: scaleY(0);
+  transform-origin: top center;
+}
+
+.timeline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* ---------- Item (desktop alternating) ---------- */
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  align-items: start;
+  column-gap: 2rem;
+}
+
+.timeline-item.is-left .timeline-meta {
+  grid-column: 1;
+  text-align: right;
+  align-items: flex-end;
+}
+
+.timeline-item.is-left .timeline-card {
+  grid-column: 1;
+  grid-row: 2;
+  margin-right: 0;
+  margin-left: auto;
+  text-align: left;
+}
+
+.timeline-item.is-right .timeline-meta {
+  grid-column: 3;
+  text-align: left;
+  align-items: flex-start;
+}
+
+.timeline-item.is-right .timeline-card {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* Dot column */
+.timeline-dot {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  margin: 0.5rem auto 0;
+  justify-self: center;
+}
+
+.timeline-dot-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 107, 53, 0.35);
+}
+
+.timeline-dot-core {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #ff6b35;
+  box-shadow: 0 0 0 4px #0a0a0a, 0 0 24px rgba(255, 107, 53, 0.55);
+}
+
+/* Meta row above card */
+.timeline-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.timeline-kind {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  width: max-content;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: #ddd;
+}
+
+.timeline-kind.kind-education {
+  color: #ff6b35;
+  border-color: rgba(255, 107, 53, 0.35);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.timeline-period {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+/* Card */
+.timeline-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.75rem 1.75rem 1.5rem;
+  max-width: 520px;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+.timeline-card:hover {
+  border-color: rgba(255, 107, 53, 0.4);
+  background: rgba(255, 107, 53, 0.04);
+  transform: translateY(-2px);
+}
+
+.timeline-card-head {
+  margin-bottom: 0.75rem;
+}
+
+.timeline-card-title {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin: 0 0 0.35rem 0;
+  line-height: 1.15;
+}
+
+.timeline-card-org {
+  font-size: 0.95rem;
+  color: #ff6b35;
+  font-weight: 600;
+  margin: 0;
+}
+
+.timeline-card-dot,
+.timeline-card-loc {
+  color: #666;
+  font-weight: 400;
+}
+
+.timeline-card-desc {
+  font-size: 0.975rem;
+  line-height: 1.65;
+  color: #aaa;
+  margin: 0 0 1rem 0;
+}
+
+.timeline-card-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.timeline-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  color: #888;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  .timeline-section {
+    padding: 6rem 1.5rem;
+  }
+
+  .timeline-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .timeline-item {
+    grid-template-columns: 44px 1fr;
+    column-gap: 1.25rem;
+  }
+
+  .timeline-spine {
+    left: 22px;
+    transform: none;
+  }
+
+  /* All items align left of spine */
+  .timeline-item.is-left .timeline-meta,
+  .timeline-item.is-right .timeline-meta {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .timeline-item.is-left .timeline-card,
+  .timeline-item.is-right .timeline-card {
+    grid-column: 2;
+    grid-row: 2;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+  }
+
+  .timeline-dot {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin: 0.4rem 0 0 0;
+    justify-self: start;
+    margin-left: 11px;
+  }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 640px) {
+  .timeline-section {
+    padding: 4.5rem 1.25rem;
+  }
+
+  .timeline-list {
+    gap: 2.75rem;
+  }
+
+  .timeline-card {
+    padding: 1.25rem 1.25rem 1.1rem;
+    border-radius: 0.85rem;
+  }
+
+  .timeline-card-desc {
+    font-size: 0.92rem;
+  }
+
+  .timeline-lede {
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-spine-fill {
+    transform: scaleY(1) !important;
+  }
+}

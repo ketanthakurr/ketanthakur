@@ -13,40 +13,44 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "E-Commerce Platform",
-    description: "A full-stack shopping experience with seamless checkout, product filtering, and admin dashboard.",
-    tags: ["React", "Node.js", "MongoDB"],
+    title: "Onified",
+    description: "Enterprise multi-app workspace built on a shared design system, tokens, and governed UI primitives. Web + mobile via Capacitor, with audit tooling, i18n, and a Studio reference app driving consistency across every business module.",
+    tags: ["React 19", "React-Native", "React-Native-Web", "TypeScript", "Redux", "Jest", "Vite", "Capacitor"],
+    year: "2026",
+    preview: "/projects/onified.png",
+    link: "https://onified.ai/",
+  },
+  {
+    title: "ProdLis",
+    description: "Product catalog platform that gives businesses a custom storefront link to showcase products, manage inventory, and route buyers straight to WhatsApp. Includes auth, dashboard, and public vendor pages.",
+    tags: ["React 19", "Redux Toolkit", "Framer Motion", "Vite"],
     year: "2025",
-    preview: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
-    link: "https://example.com",
+    preview: "/projects/prodlis.png",
+    link: "https://www.prodlis.com/",
   },
   {
-    title: "Portfolio Website",
-    description: "A bold, brutalist portfolio for a creative agency featuring scroll-driven animations and 3D elements.",
-    tags: ["Next.js", "GSAP", "Three.js"],
+    title: "Matrib",
+    description: "Cross-platform mobile news app on Expo with push notifications, OTA updates, offline-first caching via React Query, and deep linking. Shipped to iOS and Android.",
+    tags: ["React Native", "Next.js", "Bun.Js", "Expo", "React Query", "Redux"],
     year: "2025",
-    preview: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+    preview: "/projects/matrib.png",
+    link: "https://www.matrib.com/",
   },
   {
-    title: "SaaS Dashboard",
-    description: "Analytics dashboard with real-time data visualization, team management, and billing integration.",
-    tags: ["React", "TypeScript", "Recharts"],
-    year: "2024",
-    preview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
-    link: "https://example.com",
+    title: "Toolit",
+    description: "AI-assisted content workspace with a rich TipTap editor, Excalidraw canvas, streamed model responses, and a Radix-based component system. Built for fast drafting and multimodal editing.",
+    tags: ["React", "AI SDK", "Tailwind", "Fast API"],
+    year: "2025",
+    preview: "/projects/toolit.png",
+    link: "https://toolit.in/",
   },
   {
-    title: "Mobile Banking App",
-    description: "UI/UX design and frontend development for a fintech startup's mobile-first banking application.",
-    tags: ["React Native", "Figma", "Stripe"],
-    year: "2024",
-  },
-  {
-    title: "Photography Blog",
-    description: "A minimal blog platform optimized for showcasing photography with lazy loading and infinite scroll.",
-    tags: ["Gatsby", "GraphQL", "Cloudinary"],
-    year: "2024",
-    preview: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80",
+    title: "Droneverse",
+    description: "Marketing and product site for a drone-tech company. Next.js App Router with dynamic page registry, interactive Leaflet maps, COBE globe, motion-driven sections, and PDF rendering for spec sheets.",
+    tags: ["Next.js 16", "bun.js", "MongoDB", "CRM integration"],
+    year: "2025",
+    preview: "/projects/droneverse.png",
+    link: "https://droneverse.in/",
   },
 ];
 
@@ -64,8 +68,8 @@ const ProjectRow = ({ project }: { project: Project }) => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!imgRef.current || !rowRef.current || !project.preview) return;
     const rect = rowRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - 250;
-    const y = e.clientY - rect.top - 175;
+    const x = e.clientX - rect.left + 24;
+    const y = e.clientY - rect.top - 120;
     imgRef.current.style.left = `${x}px`;
     imgRef.current.style.top = `${y}px`;
   };

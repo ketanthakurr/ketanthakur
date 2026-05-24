@@ -49,15 +49,46 @@ const Hero = () => {
         '-=0.8'
       );
 
-      // Subtle floating animation for chips (continuous)
-      gsap.to(chips, {
-        y: '+=18',
-        duration: 3.6,
-        ease: 'sine.inOut',
-        yoyo: true,
-        repeat: -1,
-        stagger: { each: 0.35, from: 'center' },
+      // Doodle wobble — each chip jiggles with its own irregular timing
+      chips.forEach((chip, i) => {
+        const baseRot = parseFloat((chip as HTMLElement).dataset.baseRot || '0');
+        const rotAmp = 6 + i * 2;
+        const xAmp = 5 + (i % 3) * 2;
+        const yAmp = 4 + (i % 2) * 3;
+
+        gsap.to(chip, {
+          rotation: baseRot + rotAmp,
+          x: `+=${xAmp}`,
+          y: `-=${yAmp}`,
+          duration: 1.8 + i * 0.25,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        });
+
+        gsap.to(chip, {
+          scale: 1.04,
+          duration: 2.2 + i * 0.3,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          delay: i * 0.2,
+        });
       });
+
+      // Scribble drift for chip3 (figure-8-ish path via keyframes)
+      const chip3 = el.querySelector('.chip3');
+      if (chip3) {
+        gsap.to(chip3, {
+          keyframes: {
+            x: [0, 12, -10, -14, 0],
+            y: [0, -8, -16, 4, 0],
+          },
+          duration: 6,
+          ease: 'sine.inOut',
+          repeat: -1,
+        });
+      }
 
       // Small parallax on scroll for chips
       chips.forEach((chip, i) => {
@@ -72,6 +103,18 @@ const Hero = () => {
           },
         });
       });
+
+      // Rotating circle badge — slow infinite
+      const badge = el.querySelector('.hero_badge_ring');
+      if (badge) {
+        gsap.to(badge, {
+          rotation: 360,
+          duration: 22,
+          ease: 'none',
+          repeat: -1,
+          transformOrigin: 'center center',
+        });
+      }
 
       // CTA hover micro-interaction
       if (cta) {
@@ -112,11 +155,25 @@ const Hero = () => {
       <div className="hero_grid">
         <div className="hero_image_container">
           <img src={Ketan} alt="Ketan" className="hero_image" />
-          <img src={chip1} alt="Chip 1" className="hero_chip_image chip1" />
-          <img src={chip2} alt="Chip 2" className="hero_chip_image chip2" />
-          <img src={chip3} alt="Chip 3" className="hero_chip_image chip3" />
-          <img src={chip4} alt="Chip 4" className="hero_chip_image chip4" />
+          <img src={chip1} alt="Chip 1" className="hero_chip_image chip1" data-base-rot="20" />
+          <img src={chip2} alt="Chip 2" className="hero_chip_image chip2" data-base-rot="0" />
+          <img src={chip3} alt="Chip 3" className="hero_chip_image chip3" data-base-rot="10" />
+          <img src={chip4} alt="Chip 4" className="hero_chip_image chip4" data-base-rot="-20" />
         </div>
+      </div>
+
+      {/* Rotating circular badge — placed at hero root, above chips, white text on dark bg */}
+      <div className="hero_badge" aria-hidden="true">
+        <svg viewBox="0 0 200 200" className="hero_badge_ring">
+          <defs>
+            <path id="hero-badge-circle" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />
+          </defs>
+          <text fill="#ffffff" fontFamily="Oswald, sans-serif" fontWeight="700" fontSize="13" letterSpacing="2">
+            <textPath href="#hero-badge-circle" startOffset="0" textLength="490" lengthAdjust="spacingAndGlyphs">
+              AVAILABLE FOR PROJECTS · LET'S BUILD ·
+            </textPath>
+          </text>
+        </svg>
       </div>
 
 

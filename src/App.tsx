@@ -3,6 +3,7 @@ import Hero from './components/Hero/Hero'
 import Marquee from './components/Marquee/Marquee'
 import About from './components/About/About'
 import Experience from './components/Experience/Experience'
+import TechStack from './components/TechStack/TechStack'
 import Projects from './components/Projects/Projects'
 import Gallery from './components/Gallery/Gallery'
 import Testimonials from './components/Testimonials/Testimonials'
@@ -19,6 +20,7 @@ function App() {
       <Marquee />
       <About />
       <Experience />
+      <TechStack />
       <Projects />
       <Gallery />
       <Testimonials />
