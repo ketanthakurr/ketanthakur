@@ -304,21 +304,6 @@ const TechStack = () => {
         }
       );
 
-      // Parallax depth on elements as you scroll past
-      elements.forEach((e, i) => {
-        const depth = ((i * 7) % 6) - 3;
-        gsap.to(e, {
-          yPercent: depth * 4,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.5,
-          },
-        });
-      });
-
       // Bottom marquee
       const marquee = marqueeRef.current;
       if (marquee) {

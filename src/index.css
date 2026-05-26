@@ -30,6 +30,36 @@ body {
 
 html {
   overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Textarea — keep slim orange (still useful inside form) */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #ff6b35 transparent;
+}
+
+textarea::-webkit-scrollbar {
+  display: block;
+  width: 4px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #ff6b35;
+  border-radius: 999px;
 }
 
 h1 {

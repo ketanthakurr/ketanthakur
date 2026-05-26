@@ -9,11 +9,13 @@ import Gallery from './components/Gallery/Gallery'
 import Testimonials from './components/Testimonials/Testimonials'
 import Contact from './components/Contact/Contact'
 import Footer from './components/Footer/Footer'
+import Cursor from './components/Cursor/Cursor'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
+      <Cursor />
       <Header />
       <section className='header_placeholder'></section>
       <Hero />

@@ -23,9 +23,8 @@
 }
 
 .hero_cta{
-  width: 90%;
-  align-items: flex-end;
-  justify-content: flex-end;
+  width: fit-content;
+  align-self: center;
 }
 
 .hero_image_container {
@@ -70,6 +69,16 @@
 .hero_content_heading {
   font-size: clamp(5rem, 10vw, 15rem);
   font-family: "Oswald";
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1;
+}
+
+/* Single heading — reveal handled entirely inside Cursor component */
+.hero_content_heading {
+  cursor: pointer;
 }
 
 .hero_image {
@@ -78,6 +87,176 @@
   object-fit: cover;
   object-position: bottom;
   filter: grayscale(1);
+}
+
+/* Portrait wrapper — hosts doodle decorations around figure */
+.hero_portrait {
+  position: relative;
+  height: 100%;
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.hero_portrait:hover {
+  transform: scale(1.04);
+}
+
+.hero_portrait .hero_image {
+  display: block;
+  transition: filter 0.5s ease;
+}
+
+.hero_portrait:hover .hero_image {
+  filter: grayscale(0.4) contrast(1.05);
+}
+
+/* ===== Doodles ===== */
+.doodle {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.7) rotate(-10deg);
+  transition:
+    opacity 0.4s ease,
+    transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 4px 10px rgba(255, 107, 53, 0.35));
+  z-index: 3;
+}
+
+.doodle path[stroke] {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: stroke-dashoffset 0.7s ease;
+}
+
+.hero_portrait:hover .doodle {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.hero_portrait:hover .doodle path[stroke] {
+  stroke-dashoffset: 0;
+}
+
+/* Position doodles around figure (image is bottom-anchored, person occupies lower half) */
+.doodle-squiggle {
+  width: 110px;
+  height: 44px;
+  top: 18%;
+  left: -8%;
+  transform-origin: center;
+  transition-delay: 0.05s;
+}
+
+.hero_portrait:hover .doodle-squiggle {
+  transform: scale(1) rotate(-8deg);
+}
+
+.doodle-star {
+  width: 36px;
+  height: 36px;
+  top: 14%;
+  right: 4%;
+  transition-delay: 0.1s;
+}
+
+.hero_portrait:hover .doodle-star {
+  transform: scale(1) rotate(18deg);
+  animation: doodle-spin 4s linear infinite 0.6s;
+}
+
+.doodle-star-sm {
+  width: 22px;
+  height: 22px;
+  top: 30%;
+  left: 8%;
+  transition-delay: 0.2s;
+}
+
+.hero_portrait:hover .doodle-star-sm {
+  transform: scale(1) rotate(-22deg);
+  animation: doodle-spin 5s linear infinite reverse 0.6s;
+}
+
+.doodle-arrow {
+  width: 130px;
+  height: 80px;
+  top: 25%;
+  right: -12%;
+  transition-delay: 0.25s;
+}
+
+.hero_portrait:hover .doodle-arrow {
+  transform: scale(1) rotate(-4deg);
+}
+
+.doodle-circle {
+  width: 130px;
+  height: 90px;
+  top: 12%;
+  left: 50%;
+  margin-left: -65px;
+  transition-delay: 0.15s;
+}
+
+.hero_portrait:hover .doodle-circle {
+  transform: scale(1.05) rotate(2deg);
+}
+
+.doodle-underline {
+  width: 160px;
+  height: 24px;
+  bottom: 6%;
+  left: 50%;
+  margin-left: -80px;
+  transition-delay: 0.35s;
+}
+
+.hero_portrait:hover .doodle-underline {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+.doodle-dots {
+  width: 60px;
+  height: 60px;
+  bottom: 30%;
+  left: -6%;
+  transition-delay: 0.4s;
+}
+
+.hero_portrait:hover .doodle-dots {
+  transform: scale(1) rotate(8deg);
+}
+
+.doodle-label {
+  font-family: "Caveat", "Comic Sans MS", "Oswald", sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  font-weight: 700;
+  color: #ff6b35;
+  background: rgba(10, 10, 10, 0.6);
+  padding: 4px 10px;
+  border-radius: 8px;
+  top: 35%;
+  right: -10%;
+  letter-spacing: 0.02em;
+  transform: scale(0.7) rotate(8deg) translateX(20px);
+  transition-delay: 0.5s;
+  text-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+}
+
+.hero_portrait:hover .doodle-label {
+  transform: scale(1) rotate(8deg) translateX(0);
+}
+
+@keyframes doodle-spin {
+  to { transform: scale(1) rotate(360deg); }
+}
+
+@media (max-width: 670px) {
+  .doodle-squiggle, .doodle-arrow, .doodle-dots, .doodle-label {
+    display: none;
+  }
 }
 
 .hero_chip_image {

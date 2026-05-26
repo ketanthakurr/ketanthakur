@@ -25,7 +25,7 @@ const socials: Social[] = [
   {
     name: 'Instagram',
     handle: '@ketanthakur',
-    url: 'https://instagram.com/',
+    url: 'https://instagram.com/_ketanthakur',
     brand: '#E1306C',
     brandText: '#fff',
     slug: 'instagram',
@@ -43,7 +43,7 @@ const socials: Social[] = [
   {
     name: 'X',
     handle: '@ketanthakur',
-    url: 'https://x.com/',
+    url: 'https://x.com/_ketanthakur',
     brand: '#0a0a0a',
     brandText: '#fff',
     slug: 'x',
@@ -52,7 +52,7 @@ const socials: Social[] = [
   {
     name: 'LinkedIn',
     handle: 'in/ketanthakur',
-    url: 'https://linkedin.com/',
+    url: 'https://www.linkedin.com/in/ketanthakurr/',
     brand: '#0A66C2',
     brandText: '#fff',
     slug: 'linkedin',

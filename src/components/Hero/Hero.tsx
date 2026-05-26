@@ -140,7 +140,10 @@ const Hero = () => {
   return (
     <section id="hero" ref={sectionRef} className="hero_section">
       <div className="hero_content">
-        <h1 className='hero_content_heading'>PRODUCT DEVELOPER</h1>
+        <div className="reveal-stack" data-reveal-target>
+          <h1 className='hero_content_heading reveal-front'>PRODUCT DEVELOPER</h1>
+          <h1 className='hero_content_heading reveal-back' aria-hidden="true">SOFTWARE DEVELOPER</h1>
+        </div>
         <a href="#contact" className="hero_cta">
           <span className="hero_cta_text">Get in Touch</span>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,7 +157,46 @@ const Hero = () => {
       {/* -------------- Grid content image and chips ------------- */}
       <div className="hero_grid">
         <div className="hero_image_container">
-          <img src={Ketan} alt="Ketan" className="hero_image" />
+          <div className="hero_portrait">
+            <img src={Ketan} alt="Ketan" className="hero_image" />
+
+            {/* Doodle decorations around figure — animate on hover */}
+            <svg className="doodle doodle-squiggle" viewBox="0 0 120 50" aria-hidden="true">
+              <path d="M 5 30 Q 20 5 35 25 T 65 25 T 95 25 T 115 25" fill="none" stroke="#ff6b35" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+
+            <svg className="doodle doodle-star" viewBox="0 0 40 40" aria-hidden="true">
+              <path d="M 20 4 L 22 16 L 36 18 L 22 22 L 20 36 L 18 22 L 4 18 L 18 16 Z" fill="#ff6b35" />
+            </svg>
+
+            <svg className="doodle doodle-star-sm" viewBox="0 0 30 30" aria-hidden="true">
+              <path d="M 15 3 L 17 12 L 27 14 L 17 16 L 15 27 L 13 16 L 3 14 L 13 12 Z" fill="#ff6b35" />
+            </svg>
+
+            <svg className="doodle doodle-arrow" viewBox="0 0 140 90" aria-hidden="true">
+              <path d="M 130 10 Q 80 0 50 35 Q 35 55 25 75" fill="none" stroke="#ff6b35" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M 18 65 L 25 75 L 36 70" fill="none" stroke="#ff6b35" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+
+            <svg className="doodle doodle-circle" viewBox="0 0 120 80" aria-hidden="true">
+              <path d="M 60 8 C 100 8 112 38 110 55 C 105 78 70 76 35 70 C 12 64 4 38 22 20 C 36 8 50 6 60 8 Z" fill="none" stroke="#ff6b35" strokeWidth="2.2" strokeLinecap="round" />
+            </svg>
+
+            <svg className="doodle doodle-underline" viewBox="0 0 160 24" aria-hidden="true">
+              <path d="M 5 10 Q 40 22 80 12 T 155 14" fill="none" stroke="#ff6b35" strokeWidth="3" strokeLinecap="round" />
+            </svg>
+
+            <svg className="doodle doodle-dots" viewBox="0 0 60 60" aria-hidden="true">
+              <circle cx="10" cy="10" r="3" fill="#ff6b35" />
+              <circle cx="30" cy="22" r="2.2" fill="#ff6b35" />
+              <circle cx="50" cy="14" r="3.4" fill="#ff6b35" />
+              <circle cx="22" cy="44" r="2.6" fill="#ff6b35" />
+              <circle cx="48" cy="48" r="2.8" fill="#ff6b35" />
+            </svg>
+
+            <span className="doodle doodle-label">that&apos;s me!</span>
+          </div>
+
           <img src={chip1} alt="Chip 1" className="hero_chip_image chip1" data-base-rot="20" />
           <img src={chip2} alt="Chip 2" className="hero_chip_image chip2" data-base-rot="0" />
           <img src={chip3} alt="Chip 3" className="hero_chip_image chip3" data-base-rot="10" />

@@ -57,10 +57,10 @@ const Footer = () => {
       <div className="footer-footer">
         <div className="footer-social">
           <a href="mailto:ketanthakur603@gmail.com">GMAIL</a>
-          <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+          <a href="https://instagram.com/_ketanthakur" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
           <a href="https://wa.me/918448721488" target="_blank" rel="noopener noreferrer">WHATSAPP</a>
-          <a href="https://x.com/" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          <a href="https://x.com/_ketanthakur" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="https://linkedin.com/ketanthakurr" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
         <div className="footer-copyright">
           © KETAN 2025 ALL RIGHTS RESERVED

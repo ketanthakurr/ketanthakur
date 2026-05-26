@@ -65,20 +65,45 @@ const ProjectRow = ({ project }: { project: Project }) => {
     imgRef.current.style.transform = hovered ? 'scale(1)' : 'scale(0.95)';
   }, [hovered, project.preview]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const updatePos = (clientX: number, clientY: number) => {
     if (!imgRef.current || !rowRef.current || !project.preview) return;
     const rect = rowRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left + 24;
-    const y = e.clientY - rect.top - 120;
+    const previewW = imgRef.current.offsetWidth || 500;
+    const previewH = imgRef.current.offsetHeight || 350;
+    const gap = 24;
+    const safePad = 16;
+
+    // Default: right of cursor. Flip left if not enough space.
+    let x = clientX - rect.left + gap;
+    const rightEdge = clientX + gap + previewW;
+    if (rightEdge > window.innerWidth - safePad) {
+      x = clientX - rect.left - previewW - gap;
+    }
+    // Vertical clamp so preview stays inside viewport
+    let y = clientY - rect.top - previewH / 2;
+    const topAbs = clientY - previewH / 2;
+    if (topAbs < safePad) y = safePad - rect.top;
+    const bottomAbs = clientY + previewH / 2;
+    if (bottomAbs > window.innerHeight - safePad) {
+      y = window.innerHeight - safePad - previewH - rect.top;
+    }
+
     imgRef.current.style.left = `${x}px`;
     imgRef.current.style.top = `${y}px`;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => updatePos(e.clientX, e.clientY);
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    updatePos(e.clientX, e.clientY); // place preview at cursor before fade-in
+    setHovered(true);
   };
 
   return (
     <div
       ref={rowRef}
       className={`project-row ${hovered ? 'hovered' : ''}`}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={handleMouseMove}
     >

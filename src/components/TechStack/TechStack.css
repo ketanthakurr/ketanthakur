@@ -13,12 +13,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
+  background:
+    radial-gradient(ellipse at center, rgba(255, 107, 53, 0.04), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -173,8 +169,6 @@
   color: var(--brand, #ff6b35);
   align-self: center;
   transition: color 0.3s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  animation: el-bob 4.5s ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
 }
 
 .el-icon-main svg,
@@ -196,11 +190,6 @@
   filter: brightness(0) invert(1);
 }
 
-@keyframes el-bob {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-3px) rotate(3deg); }
-}
-
 .el-name {
   position: relative;
   z-index: 1;
@@ -219,22 +208,9 @@
   transition: color 0.3s ease;
 }
 
-/* Idle pulse halo behind tile */
+/* Idle pulse — kept inert (no infinite animation, removed for perf) */
 .el-pulse {
-  position: absolute;
-  inset: 0;
-  background: var(--brand, #ff6b35);
-  opacity: 0;
-  z-index: 0;
-  border-radius: 4px;
-  animation: el-pulse 5s ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
-  pointer-events: none;
-}
-
-@keyframes el-pulse {
-  0%, 100% { opacity: 0; transform: scale(1); }
-  50%      { opacity: 0.05; transform: scale(0.96); }
+  display: none;
 }
 
 .el-corner {

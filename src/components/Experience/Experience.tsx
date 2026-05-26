@@ -181,12 +181,14 @@ const Experience = () => {
       <div className="timeline-container">
         <div className="timeline-header">
           <p className="timeline-badge">Journey</p>
-          <h2 className="timeline-title">
-            FROM CLASSROOM<br />TO <span>CODEBASE.</span>
-          </h2>
-          <p className="timeline-lede">
-            A short walk through the schools that shaped me and the teams I built with.
-          </p>
+          <div className="reveal-stack" data-reveal-target>
+            <h2 className="timeline-title reveal-front">
+              FROM CLASSROOM<br />TO <span>CODEBASE.</span>
+            </h2>
+            <h2 className="timeline-title reveal-back" aria-hidden="true">
+              FROM RAMEN<br />TO <span>REFACTORS.</span>
+            </h2>
+          </div>
         </div>
 
         <div className="timeline-rail">
