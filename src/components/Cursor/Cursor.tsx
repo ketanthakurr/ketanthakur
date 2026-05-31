@@ -18,16 +18,24 @@ const Cursor = () => {
     let visible = false;
     let currentTarget: HTMLElement | null = null;
 
-    const MASK_HALF = 180; // half of 360 mask-size — keeps circle centered on cursor
+    // Half the lens diameter — must track the responsive --mask-size in Cursor.css
+    // (360 desktop / 280 ≤1024 / 200 ≤670) so the circle stays centered on the cursor.
+    const maskHalf = () => {
+      const w = window.innerWidth;
+      if (w <= 670) return 100;
+      if (w <= 1024) return 140;
+      return 180;
+    };
 
     const updateRevealCoords = (clientX: number, clientY: number) => {
       if (!currentTarget) return;
       const back = currentTarget.querySelector('.reveal-back') as HTMLElement | null;
       if (!back) return;
       const r = back.getBoundingClientRect();
+      const half = maskHalf();
       gsap.to(back, {
-        '--mask-x': `${clientX - r.left - MASK_HALF}px`,
-        '--mask-y': `${clientY - r.top - MASK_HALF}px`,
+        '--mask-x': `${clientX - r.left - half}px`,
+        '--mask-y': `${clientY - r.top - half}px`,
         duration: 0.6,
         ease: 'power3.out',
         overwrite: 'auto',

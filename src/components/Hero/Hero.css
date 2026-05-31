@@ -402,3 +402,35 @@
     display: none;
   }
 }
+
+/* ===== Heading responsiveness — wrap + scale down so it never overflows ===== */
+@media screen and (max-width: 1024px) {
+  .hero_content {
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .hero_content .reveal-stack {
+    display: block;
+    width: 100%;
+  }
+
+  .hero_content_heading {
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    font-size: clamp(2.8rem, 11vw, 7rem);
+    line-height: 1;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .hero_content {
+    padding: 0 1rem;
+  }
+
+  .hero_content_heading {
+    font-size: clamp(2.1rem, 13.5vw, 4.4rem);
+    line-height: 1.04;
+  }
+}

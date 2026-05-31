@@ -25,11 +25,13 @@ a:hover {
 body {
   margin: 0;
   min-height: 100vh;
-  overflow-x: hidden;
+  /* clip (not hidden) — hidden makes the root a scroll container and breaks
+     ScrollTrigger's position:fixed pin (causes pinned-section jitter). */
+  overflow-x: clip;
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
