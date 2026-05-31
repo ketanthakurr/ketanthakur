@@ -4,34 +4,9 @@ import './Testimonials.css';
 
 const testimonials = [
   {
-    name: "Rahul Sharma",
-    role: "CEO, TechStart India",
-    text: "Ketan delivered an exceptional e-commerce platform that exceeded our expectations. His attention to detail and understanding of user experience is unmatched.",
-  },
-  {
-    name: "Priya Menon",
-    role: "Founder, DesignCraft",
-    text: "Working with Ketan was a game-changer for our brand. He transformed our vision into a stunning digital experience that our customers love.",
-  },
-  {
-    name: "Arjun Patel",
-    role: "Product Manager, ScaleUp",
-    text: "Ketan's full-stack expertise made our product launch seamless. From frontend polish to backend architecture, he handled it all brilliantly.",
-  },
-  {
-    name: "Sneha Reddy",
-    role: "Creative Director, Artivate",
-    text: "His photography skills combined with web development created a portfolio site for us that truly stands out. Ketan is a rare multi-talented creator.",
-  },
-  {
-    name: "Vikram Singh",
-    role: "CTO, DataFlow",
-    text: "Ketan's system design approach is methodical and scalable. He built an architecture that handles our growing user base effortlessly.",
-  },
-  {
-    name: "Ananya Iyer",
-    role: "Marketing Lead, BrightEdge",
-    text: "The website Ketan built for us increased our conversion rate by 40%. His understanding of both design and development is impressive.",
+    name: "DroneVerse Team",
+    role: "DroneVerse",
+    text: "Working with Ketan to build our website for DroneVerse was an outstanding experience. He was collaborative, understood our vision right from the start, and delivered everything smoothly and on time. His creativity, attention to detail, and consistent support throughout the entire process truly set them apart.",
   },
 ];
 
@@ -83,6 +58,7 @@ const Testimonials = () => {
   }, [current, goTo]);
 
   useEffect(() => {
+    if (testimonials.length <= 1) return;
     autoPlayRef.current = setInterval(next, 5000);
     return () => clearInterval(autoPlayRef.current);
   }, [next]);
@@ -128,32 +104,34 @@ const Testimonials = () => {
             </div>
           </div>
 
-          <div className="carousel-controls-new">
-            <div className="carousel-dots">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    goTo(i, i > current ? 1 : -1);
-                    resetAutoPlay();
-                  }}
-                  className={`dot ${i === current ? 'active' : ''}`}
-                />
-              ))}
+          {testimonials.length > 1 && (
+            <div className="carousel-controls-new">
+              <div className="carousel-dots">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      goTo(i, i > current ? 1 : -1);
+                      resetAutoPlay();
+                    }}
+                    className={`dot ${i === current ? 'active' : ''}`}
+                  />
+                ))}
+              </div>
+              <div className="carousel-arrows">
+                <button onClick={() => { prev(); resetAutoPlay(); }} className="arrow-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 18L9 12L15 6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <button onClick={() => { next(); resetAutoPlay(); }} className="arrow-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 18L15 12L9 6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div className="carousel-arrows">
-              <button onClick={() => { prev(); resetAutoPlay(); }} className="arrow-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M15 18L9 12L15 6" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              <button onClick={() => { next(); resetAutoPlay(); }} className="arrow-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 18L15 12L9 6" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+          )}
         </motion.div>
       </div>
     </section>

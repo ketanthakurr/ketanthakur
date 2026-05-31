@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './TechStack.css';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.ticker.lagSmoothing(500, 33);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 type IconKey = string;
 
@@ -169,15 +171,19 @@ const SI_SLUGS: Record<string, string> = {
   sass: 'sass',
   crossplatform: 'react',
   expo: 'expo',
+  ota: 'expo',
+  store: 'appstore',
   capacitor: 'capacitor',
   apple: 'apple',
   android: 'android',
+  zustand: 'react',
   redux: 'redux',
   query: 'reactquery',
   context: 'react',
   node: 'nodedotjs',
   express: 'express',
   bun: 'bun',
+  elysia: 'bun',
   rest: 'fastapi',
   jwt: 'jsonwebtokens',
   mongo: 'mongodb',
@@ -188,14 +194,17 @@ const SI_SLUGS: Record<string, string> = {
   vercel: 'vercel',
   docker: 'docker',
   gha: 'githubactions',
+  cicd: 'githubactions',
   jest: 'jest',
   rtl: 'testinglibrary',
   git: 'git',
   github: 'github',
-  vscode: 'vscodium',
+  vscode: 'visualstudiocode',
   postman: 'postman',
   storybook: 'storybook',
   figma: 'figma',
+  uiux: 'figma',
+  responsive: 'css',
   arduino: 'arduino',
   rpi: 'raspberrypi',
   npm: 'npm',
@@ -208,16 +217,25 @@ const SI_SLUGS: Record<string, string> = {
   graphql: 'graphql',
 };
 
+const ICON_URL_OVERRIDES: Record<string, string> = {
+  vscode: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
+};
+
 const Icon = ({ icon, name }: { icon: IconKey; name?: string }) => {
+  const overrideUrl = ICON_URL_OVERRIDES[icon];
   const slug = SI_SLUGS[icon];
   const [failed, setFailed] = useState(false);
 
-  if (slug && !failed) {
+  const src = overrideUrl || (slug ? `https://cdn.simpleicons.org/${slug}` : null);
+
+  if (src && !failed) {
     return (
       <img
-        src={`https://cdn.simpleicons.org/${slug}`}
+        src={src}
         alt={name || icon}
-        loading="lazy"
+        loading="eager"
+        decoding="async"
+        fetchPriority="low"
         className="el-icon-img"
         onError={() => setFailed(true)}
       />
@@ -295,14 +313,43 @@ const TechStack = () => {
       // Element tiles: staggered scale-in scroll reveal (periodic-table assembly)
       const elements = el.querySelectorAll<HTMLElement>('.el');
       gsap.fromTo(elements,
-        { opacity: 0, scale: 0.6, y: 30, rotate: -8 },
+        { opacity: 0, scale: 0.85, y: 16 },
         {
-          opacity: 1, scale: 1, y: 0, rotate: 0,
-          duration: 0.55, ease: 'back.out(1.7)',
-          stagger: { each: 0.025, from: 'random' },
+          opacity: 1, scale: 1, y: 0,
+          duration: 0.4, ease: 'power3.out',
+          stagger: { each: 0.02, from: 'random' },
+          force3D: true,
           scrollTrigger: { trigger: '.periodic-grid', start: 'top 85%' },
+          onComplete: () => elements.forEach((e) => { e.style.willChange = ''; }),
         }
       );
+
+      // Parallax depth — batched into 6 depth bands.
+      // Was 1 ScrollTrigger per tile (~50); now 6 grouped tweens.
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      if (!prefersReduced && !isMobile) {
+        const bands: HTMLElement[][] = [[], [], [], [], [], []];
+        elements.forEach((e, i) => {
+          bands[(i * 7) % 6].push(e);
+          e.style.willChange = 'transform';
+        });
+        const depthMap = [-3, -2, -1, 1, 2, 3];
+        bands.forEach((band, idx) => {
+          if (!band.length) return;
+          gsap.to(band, {
+            yPercent: depthMap[idx] * 4,
+            ease: 'none',
+            force3D: true,
+            scrollTrigger: {
+              trigger: el,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.5,
+            },
+          });
+        });
+      }
 
       // Bottom marquee
       const marquee = marqueeRef.current;
@@ -337,37 +384,51 @@ const TechStack = () => {
     return () => ctx.revert();
   }, []);
 
-  // Invert cursor follows pointer instantly (no lerp)
+  // Cursor blob: rAF-throttled + skip on touch devices.
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const blob = el.querySelector<HTMLDivElement>('.tech-cursor-blob');
     if (!blob) return;
+    if (window.matchMedia('(hover: none)').matches) return;
 
-    const onMove = (e: MouseEvent) => {
-      const s = blob.offsetWidth;
-      blob.style.transform = `translate3d(${e.clientX - s / 2}px, ${e.clientY - s / 2}px, 0)`;
+    let raf = 0;
+    let lastX = 0;
+    let lastY = 0;
+    const size = blob.offsetWidth;
+
+    const flush = () => {
+      raf = 0;
+      blob.style.transform = `translate3d(${lastX - size / 2}px, ${lastY - size / 2}px, 0)`;
       blob.style.opacity = '1';
     };
+    const onMove = (e: MouseEvent) => {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (!raf) raf = requestAnimationFrame(flush);
+    };
     const onLeave = () => { blob.style.opacity = '0'; };
-    const onElEnter = () => blob.classList.add('is-hover-tile');
-    const onElLeave = () => blob.classList.remove('is-hover-tile');
+    // Event delegation: single listener for tile hover state instead of N×2.
+    const onOver = (e: Event) => {
+      if ((e.target as HTMLElement).closest('.el')) blob.classList.add('is-hover-tile');
+    };
+    const onOut = (e: Event) => {
+      const t = e.target as HTMLElement;
+      const r = (e as MouseEvent).relatedTarget as HTMLElement | null;
+      if (t.closest('.el') && !r?.closest('.el')) blob.classList.remove('is-hover-tile');
+    };
 
-    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mousemove', onMove, { passive: true });
     el.addEventListener('mouseleave', onLeave);
-    const els = el.querySelectorAll<HTMLElement>('.el');
-    els.forEach((p) => {
-      p.addEventListener('mouseenter', onElEnter);
-      p.addEventListener('mouseleave', onElLeave);
-    });
+    el.addEventListener('mouseover', onOver);
+    el.addEventListener('mouseout', onOut);
 
     return () => {
+      if (raf) cancelAnimationFrame(raf);
       el.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', onLeave);
-      els.forEach((p) => {
-        p.removeEventListener('mouseenter', onElEnter);
-        p.removeEventListener('mouseleave', onElLeave);
-      });
+      el.removeEventListener('mouseover', onOver);
+      el.removeEventListener('mouseout', onOut);
     };
   }, []);
 

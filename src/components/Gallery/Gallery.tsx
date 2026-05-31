@@ -10,12 +10,16 @@ interface Photo {
 }
 
 const photos: Photo[] = [
-  { src: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80", title: "Urban Streets", category: "Street" },
-  { src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80", title: "Portraits", category: "Portrait" },
-  { src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80", title: "Misty Mountains", category: "Landscape" },
-  { src: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=600&q=80", title: "Geometry", category: "Architecture" },
-  { src: "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=600&q=80", title: "Night City", category: "Street" },
-  { src: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80", title: "Macro Flora", category: "Macro" },
+  { src: "/gallery/gallery1.jpg", title: "Squad Goals", category: "Photography" },
+  { src: "/gallery/gallery2.jpg", title: "Chai pe charcha", category: "Photography" },
+  { src: "/gallery/gallery4.jpg", title: "Sweet Heist", category: "Photography" },
+  { src: "/gallery/gallery5.jpg", title: "Sharp Eyes", category: "Photography" },
+  { src: "/gallery/gallery6.jpg", title: "Do Not Disturb", category: "Photography" },
+  { src: "/gallery/gallery7.jpg", title: "Cold Blood", category: "Photography" },
+  { src: "/gallery/gallery8.jpg", title: "Gods Live Here", category: "Photography" },
+  { src: "/gallery/gallery9.jpg", title: "Ghungroo Riot", category: "Photography" },
+  { src: "/gallery/gallery10.JPG", title: "Sky Riot", category: "Photography" },
+  { src: "/gallery/gallery11.jpg", title: "Spotlight", category: "Photography" },
 ];
 
 const Gallery = () => {

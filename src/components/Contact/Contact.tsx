@@ -333,7 +333,7 @@ const Contact = () => {
                 <label>Name</label>
                 <input
                   type="text" required
-                  placeholder="Jane Doe"
+                  placeholder="Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   onFocus={() => broadcastTyping(true)}
@@ -344,7 +344,7 @@ const Contact = () => {
                 <label>Email</label>
                 <input
                   type="email" required
-                  placeholder="jane@studio.com"
+                  placeholder="email@example.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   onFocus={() => broadcastTyping(true)}
@@ -395,7 +395,7 @@ const Contact = () => {
           <div className="form-card-foot">
             <div className="form-foot-row">
               <span className="form-foot-key">Based in</span>
-              <span className="form-foot-val">Gurugram · Sirmaur, IN</span>
+              <span className="form-foot-val">Gurugram, Haryana, IN</span>
             </div>
             <div className="form-foot-row">
               <span className="form-foot-key">Status</span>
