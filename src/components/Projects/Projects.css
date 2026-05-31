@@ -1,220 +1,467 @@
-.projects-section {
-  min-height: 100vh;
-  background: #0a0a0a;
-  color: white;
-  padding: 6rem 2rem;
+/* =====================================================================
+   SELECTED WORK — "The Deck": sticky stacking project cards
+   Base layer = mobile / reduced-motion (clean vertical stack).
+   Sticky stack + scale + 3D tilt live in the enhanced media query below.
+   ===================================================================== */
+
+.works {
+  position: relative;
   width: 100%;
   max-width: 100vw;
-  overflow: hidden;
-}
-
-.projects-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.projects-hero {
-  margin-bottom: 3rem;
-}
-
-.projects-badge {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  color: #ff6b35;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.projects-title {
-  font-size: 5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 0.9;
-  color: white;
-}
-
-.projects-title span {
-  color: #ff6b35;
-}
-
-.projects-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.project-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 3.5rem 0;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.project-row:last-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.project-preview {
-  position: absolute;
-  z-index: 10;
-  pointer-events: none;
-  width: 420px;
-  height: 240px;
-  border-radius: 0.75rem;
-  overflow: hidden;
   background: #0a0a0a;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  color: #fff;
+  padding: 5rem 1.25rem;
 }
 
-.project-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
+/* ---------- Header ---------- */
+.works-head {
+  max-width: 1200px;
+  margin: 0 auto 3rem;
 }
 
-.project-content {
-  display: flex;
-  justify-content: space-between;
-  gap: 3rem;
-}
-
-.project-main {
-  flex: 1;
-}
-
-.project-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.project-header h3 {
-  font-size: 2.5rem;
+.works-badge {
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: #ff6b35;
   font-weight: 700;
-  color: white;
-  margin: 0;
-  transition: color 0.3s ease;
-}
-
-.project-row.hovered .project-header h3 {
-  color: #ff6b35;
-}
-
-.arrow-icon {
-  color: #888;
-  transition: all 0.3s ease;
-}
-
-.project-row.hovered .arrow-icon {
-  color: #ff6b35;
-  transform: translate(4px, -4px);
-}
-
-.project-description {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: #888;
-  max-width: 600px;
   margin: 0 0 1rem 0;
 }
 
-.project-link {
+.works-title {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(2.4rem, 8vw, 5.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.works-title span {
+  color: #ff6b35;
+}
+
+.works-sub {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #888;
+  max-width: 48ch;
+  margin: 1.25rem 0 0 0;
+}
+
+.works-progress-rail {
+  height: 2px;
+  width: 100%;
+  margin-top: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.works-progress-fill {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, #ff6b35, #ffb088);
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.55);
+}
+
+/* ---------- Deck + cards ---------- */
+.works-deck {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.work-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 1.75rem;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(130% 120% at 100% 0%, rgba(255, 107, 53, 0.08), transparent 52%),
+    linear-gradient(160deg, #141418, #0d0d10);
+  box-shadow: 0 30px 80px -42px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+
+.work-ghost {
+  position: absolute;
+  top: -1.5rem;
+  right: -0.5rem;
+  z-index: 0;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: clamp(7rem, 26vw, 14rem);
+  line-height: 0.7;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.045);
+  pointer-events: none;
+  user-select: none;
+}
+
+.work-body {
+  position: relative;
+  z-index: 1;
+}
+
+.work-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.3rem;
+}
+
+.work-index {
+  font-family: "Space Mono", monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ff6b35;
+}
+
+.work-index i {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: #555;
+  margin-left: 0.15rem;
+}
+
+.work-status {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #ff6b35;
-  font-weight: 600;
-  text-decoration: none;
-  transition: gap 0.3s ease;
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #8a8a8a;
 }
 
-.project-link:hover {
-  gap: 0.75rem;
-  text-decoration: underline;
+.work-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-shadow: 0 0 10px #2ecc71;
+  animation: live-pulse 1.7s ease-in-out infinite;
 }
 
-.project-link svg {
-  width: 16px;
-  height: 16px;
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
 }
 
-.project-meta {
+.work-name {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(2.2rem, 8vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.1rem 0;
+}
+
+.work-desc {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #9a9a9a;
+  max-width: 46ch;
+  margin: 0 0 1.5rem 0;
+}
+
+.work-tags {
+  list-style: none;
+  margin: 0 0 1.7rem 0;
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1rem;
-}
-
-.project-year {
-  font-size: 0.9rem;
-  color: #666;
-  font-family: 'Courier New', monospace;
-}
-
-.project-tags {
-  display: flex;
-  gap: 0.5rem;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
-.tag {
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  font-size: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #888;
+.work-tag {
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.7rem;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.02);
+  color: #9a9a9a;
 }
 
-@media (max-width: 1024px) {
-  .projects-title {
-    font-size: 3.5rem;
+.work-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.95rem;
+  color: #0a0a0a;
+  background: #ff6b35;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: gap 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.work-visit svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* keep dark text on the orange pill — override global a:hover (blue) */
+.work-visit,
+.work-visit:hover {
+  color: #0a0a0a;
+}
+
+.work-visit:hover {
+  gap: 1rem;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -10px rgba(255, 107, 53, 0.6);
+}
+
+/* ---------- Browser-framed screenshot ---------- */
+.work-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.work-frame {
+  display: block;
+  text-decoration: none;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #16161c;
+  box-shadow: 0 40px 90px -34px rgba(0, 0, 0, 0.95);
+  transition: border-color 0.4s ease;
+  will-change: transform;
+}
+
+.work-card:hover .work-frame {
+  border-color: rgba(255, 107, 53, 0.4);
+}
+
+.work-frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 1rem;
+  background: #1c1c24;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.work-lights {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.work-lights i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #3a3a44;
+}
+
+.work-lights i:nth-child(1) { background: #ff5f57; }
+.work-lights i:nth-child(2) { background: #febc2e; }
+.work-lights i:nth-child(3) { background: #28c840; }
+
+.work-url {
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: #8a8a8a;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.28rem 0.7rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.work-shot {
+  position: relative;
+  overflow: hidden;
+  /* match the screenshots' real ratio (~1.84:1) so contain leaves no blank bars */
+  aspect-ratio: 1.84;
+  background: #0a0a0a;
+}
+
+.work-shot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* 3D scene wrapper is transparent to layout on mobile (children flow in card) */
+.work-3d {
+  display: contents;
+}
+
+/* decorative depth layers — desktop-only */
+.work-orb,
+.work-sheen,
+.work-dim {
+  display: none;
+}
+
+/* =====================================================================
+   ENHANCED — desktop with motion: sticky deck, split layout, 3D frame
+   ===================================================================== */
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  .works {
+    padding: 7rem 2rem 9rem;
   }
 
-  .project-content {
-    flex-direction: column;
-    gap: 2rem;
+  .works-deck {
+    display: block;
   }
 
-  .project-meta {
-    align-items: flex-start;
+  .work-card {
+    position: sticky;
+    top: clamp(72px, 9vh, 112px);
+    height: clamp(540px, 80vh, 720px);
+    max-width: 1200px;
+    margin: 0 auto 8vh;
+    padding: clamp(2rem, 3.5vw, 3.5rem);
+    transform-origin: center top;
+    will-change: transform, filter;
+    /* depth host for the layered 3D scene inside */
+    perspective: 1400px;
   }
 
-  .project-tags {
-    justify-content: flex-start;
+  .work-card:last-child {
+    margin-bottom: 0;
   }
 
-  .project-preview {
-    display: none;
+  /* dark overlay that fades in as the next card covers this one */
+  .work-dim {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    border-radius: inherit;
+    background: #060606;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* The tilting 3D scene — grid lives here now */
+  .work-3d {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    align-items: center;
+    gap: clamp(2rem, 4vw, 4.5rem);
+    height: 100%;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* Layered depths — parallax against each other as the scene tilts */
+  .work-body { transform: translateZ(34px); }
+  .work-visual { transform: translateZ(58px); }
+
+  /* Alternate sides — visual always keeps the wider track */
+  .work-card--flip .work-3d {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  }
+
+  .work-card--flip .work-body { order: 2; transform: translateZ(34px); }
+  .work-card--flip .work-visual { order: 1; transform: translateZ(58px); }
+
+  .work-card--flip .work-ghost {
+    right: auto;
+    left: -0.5rem;
+  }
+
+  .work-desc {
+    font-size: 1.05rem;
+  }
+
+  .work-frame {
+    transform-style: preserve-3d;
+  }
+
+  .work-shot {
+    aspect-ratio: 1.84;
+    height: auto;
+  }
+
+  /* deep ambient glow orb sitting behind everything */
+  .work-orb {
+    display: block;
+    position: absolute;
+    inset: 12% 6%;
+    z-index: 0;
+    border-radius: 999px;
+    background: radial-gradient(60% 60% at 50% 50%, rgba(255, 107, 53, 0.2), transparent 70%);
+    filter: blur(55px);
+    pointer-events: none;
+    transform: translateZ(-90px);
+    animation: orb-float 7s ease-in-out infinite;
+  }
+
+  @keyframes orb-float {
+    0%, 100% { transform: translateZ(-90px) translateY(0); }
+    50% { transform: translateZ(-90px) translateY(-16px); }
+  }
+
+  /* pointer-tracking light sweep over the screenshot */
+  .work-sheen {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 42%);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .work-card.is-live .work-sheen {
+    opacity: 1;
+  }
+
+  /* screenshot zooms a touch on hover */
+  .work-shot img {
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .work-card:hover .work-shot img {
+    transform: scale(1.04);
   }
 }
 
-@media (max-width: 768px) {
-  .projects-section {
-    padding: 4rem 1.5rem;
+@media (max-width: 640px) {
+  .works {
+    padding: 4rem 1.1rem;
   }
 
-  .projects-title {
-    font-size: 2.5rem;
+  .work-card {
+    padding: 1.4rem;
+    border-radius: 18px;
   }
 
-  .project-header h3 {
-    font-size: 1.75rem;
-  }
-
-  .project-description {
-    font-size: 1rem;
-  }
-
-  .project-row {
-    padding: 2.5rem 0;
+  .work-topline {
+    margin-bottom: 1rem;
   }
 }

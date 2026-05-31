@@ -1,0 +1,191 @@
+/* Scroll lock while the intro runs */
+html.intro-lock,
+body.intro-lock {
+  overflow: hidden !important;
+  height: 100%;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: transparent;
+  font-family: "Oswald", sans-serif;
+  overflow: hidden;
+  /* permanent overlay — must never block the site once revealed */
+  pointer-events: none;
+}
+
+/* z1 — solid orange backdrop (hides the site; dissolves on scroll).
+   Hidden by default so it never flashes before JS sets the scroll state;
+   the splash covers the top-load case, JS reveals it on the intro. */
+.intro-orange {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #ff6b35;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* z2 — smoke / frosted layer that blurs the revealed site, then clears */
+.intro-smoke {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.1), transparent 60%);
+  opacity: 0;
+}
+
+/* z3 — the name, sharp, zooming toward the viewer from dead-center */
+.intro-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+  pointer-events: none;
+}
+
+.intro-name {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.02em;
+  font-family: "Oswald", sans-serif;
+  font-weight: 900;
+  font-size: clamp(3.4rem, 14vw, 13rem);
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  opacity: 0; /* revealed by JS / splash — avoids pre-JS flash */
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+
+/* z4 — splash / loader (covers everything until it fades) */
+.intro-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: #ff6b35;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+
+.intro-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  color: #0a0a0a;
+  padding: 1.5rem;
+}
+
+.intro-load-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.intro-count {
+  font-family: "Oswald", sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 16vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  display: inline-flex;
+  align-items: flex-start;
+}
+
+.intro-count i {
+  font-style: normal;
+  font-family: "Space Mono", monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-top: 0.8rem;
+  margin-left: 0.3rem;
+}
+
+.intro-bar {
+  position: relative;
+  width: min(260px, 60vw);
+  height: 2px;
+  background: rgba(10, 10, 10, 0.22);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.intro-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: #0a0a0a;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* scroll hint */
+.intro-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 7%;
+  z-index: 5;
+  text-align: center;
+  color: #0a0a0a;
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.intro-hint .chev {
+  display: block;
+  margin: 0.55rem auto 0;
+  animation: intro-nudge 1.5s ease-in-out infinite;
+}
+
+@keyframes intro-nudge {
+  0%, 100% { transform: translateY(0); opacity: 0.65; }
+  50% { transform: translateY(7px); opacity: 1; }
+}
+
+/* skip */
+.intro-skip {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 5;
+  background: transparent;
+  border: 1px solid rgba(10, 10, 10, 0.4);
+  color: #0a0a0a;
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.intro-skip:hover {
+  background: #0a0a0a;
+  color: #ff6b35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

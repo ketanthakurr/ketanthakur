@@ -7,12 +7,20 @@ const Header = () => {
   const [menuOrigin, setMenuOrigin] = useState({ x: '50%', y: '2rem' });
 
   useEffect(() => {
+    // Full-width while on the intro + hero; floats once you scroll past the hero.
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const hero = document.getElementById('hero');
+      const threshold = hero ? hero.offsetTop + hero.offsetHeight - 120 : 50;
+      setIsScrolled(window.scrollY > threshold);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
