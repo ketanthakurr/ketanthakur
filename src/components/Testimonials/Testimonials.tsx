@@ -14,7 +14,7 @@ const Testimonials = () => {
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const autoPlayRef = useRef<ReturnType<typeof setInterval>>();
+  const autoPlayRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
   const animateCard = useCallback((direction: number, callback: () => void) => {
     if (!cardRef.current || isAnimating) return;
