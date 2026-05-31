@@ -1,0 +1,13 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Brutalist KT monogram. Dark tile, orange Oswald-condensed mark, terminal-cursor accent. -->
+  <rect width="64" height="64" rx="13" fill="#0a0a0a"/>
+  <rect x="1" y="1" width="62" height="62" rx="12.5" fill="none" stroke="#ff6b35" stroke-opacity="0.18"/>
+  <!-- K: vertical stem + two sharp diagonals -->
+  <g stroke="#ff6b35" stroke-width="8" stroke-linecap="butt">
+    <path d="M19 13 V46"/>
+    <path d="M19 31 L40 13"/>
+    <path d="M19 31 L41 46"/>
+  </g>
+  <!-- terminal-cursor block: nods to Space Mono / dev craft -->
+  <rect x="44" y="42" width="9" height="9" fill="#ff6b35"/>
+</svg>

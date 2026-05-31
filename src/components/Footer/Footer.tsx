@@ -22,19 +22,6 @@ const Footer = () => {
           scrub: 1,
         },
       });
-      gsap.fromTo('.footer-image img',
-        { scale: 1.15, yPercent: -10 },
-        {
-          scale: 1, yPercent: 5,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        }
-      );
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -42,9 +29,6 @@ const Footer = () => {
   return (
     <section ref={sectionRef} id="footer" className="footer">
       <div className="footer-container">
-        <div className="footer-image">
-          <img src="https://via.placeholder.com/400x200" alt="Team" />
-        </div>
         <nav className="footer-nav">
           <a href="#hero">HOME</a>
           <a href="#about">ABOUT</a>
