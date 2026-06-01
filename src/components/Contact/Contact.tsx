@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import './Contact.css';
 
@@ -244,21 +244,65 @@ const Mascot = ({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null
   );
 };
 
+// Web3Forms key is public by design (sent from the browser). Env var overrides if set.
+const WEB3FORMS_ACCESS_KEY =
+  (import.meta.env.VITE_WEB3FORMS_KEY as string | undefined) ||
+  "c02067ab-32b6-4711-b019-0dfbac995333";
+
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [burst, setBurst] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showToast, setShowToast] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    window.dispatchEvent(new CustomEvent('mascot:happy'));
-    setBurst(true);
-    setTimeout(() => setBurst(false), 1200);
-    setTimeout(() => {
-      alert("Thanks for reaching out! I'll get back to you soon.");
-      setForm({ name: "", email: "", message: "" });
-    }, 400);
+    if (status === "sending") return;
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      setStatus("error");
+      setErrorMsg("Form not configured. Set VITE_WEB3FORMS_KEY.");
+      return;
+    }
+
+    setStatus("sending");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          subject: `Portfolio contact — ${form.name}`,
+          from_name: "Portfolio Contact Form",
+        }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        window.dispatchEvent(new CustomEvent('mascot:happy'));
+        setBurst(true);
+        setTimeout(() => setBurst(false), 1200);
+        setStatus("ok");
+        setForm({ name: "", email: "", message: "" });
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        setTimeout(() => setStatus("idle"), 3200);
+      } else {
+        setStatus("error");
+        setErrorMsg(data.message || "Something went wrong. Try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Network error. Check connection and retry.");
+    }
   };
 
   const broadcastTyping = (on: boolean) => {
@@ -365,8 +409,10 @@ const Contact = () => {
               />
             </div>
             <div className="submit-wrap">
-              <button ref={submitRef} type="submit" className="submit-btn">
-                <span className="submit-btn-label">Send Message</span>
+              <button ref={submitRef} type="submit" className="submit-btn" disabled={status === "sending"}>
+                <span className="submit-btn-label">
+                  {status === "sending" ? "Sending…" : status === "ok" ? "Sent ✓" : "Send Message"}
+                </span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -380,6 +426,11 @@ const Contact = () => {
                 </div>
               )}
             </div>
+            {status === "error" && (
+              <p className="form-status form-status-error" role="alert">
+                {errorMsg}
+              </p>
+            )}
           </form>
 
           {/* Compact socials row */}
@@ -406,6 +457,40 @@ const Contact = () => {
           </div>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            className="sent-toast"
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 80, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 420, damping: 28 }}
+          >
+            <span className="sent-toast-confetti" aria-hidden="true">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <i key={i} style={{ ['--a' as string]: `${i * 36}deg` }} />
+              ))}
+            </span>
+
+            <span className="sent-toast-check" aria-hidden="true">
+              <svg viewBox="0 0 52 52">
+                <circle className="stc-ring" cx="26" cy="26" r="23" />
+                <path className="stc-tick" d="M15 27 l7 7 l15 -16" />
+              </svg>
+            </span>
+
+            <span className="sent-toast-body">
+              <span className="sent-toast-title">Message Sent</span>
+              <span className="sent-toast-sub">Reply heading your way within a day.</span>
+            </span>
+
+            <span className="sent-toast-progress" aria-hidden="true" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

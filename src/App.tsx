@@ -10,6 +10,7 @@ import Testimonials from './components/Testimonials/Testimonials'
 import Contact from './components/Contact/Contact'
 import Footer from './components/Footer/Footer'
 import Cursor from './components/Cursor/Cursor'
+import AudioControl from './components/AudioControl/AudioControl'
 import Intro from './components/Intro/Intro'
 import { useEffect } from 'react'
 import './App.css'
@@ -28,6 +29,7 @@ function App() {
   return (
     <div className="App">
       <Cursor />
+      <AudioControl />
       <Header />
       {/* Intro section — its own scroll region. Scrolling through it runs the
           name-zoom reveal; the fixed visuals live in <Intro />. */}

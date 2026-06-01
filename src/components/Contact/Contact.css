@@ -563,3 +563,144 @@
     height: 70px;
   }
 }
+
+/* ── Form submit status ── */
+.form-status {
+  margin: 0.85rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.form-status-ok { color: #25D366; }
+.form-status-error { color: #EA4335; }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ──────────────────────────────────────────────
+   "Message Sent" toast — brutalist-playful, auto-vanishes in 3s
+   ────────────────────────────────────────────── */
+.sent-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  z-index: 10000;
+  translate: -50% 0; /* keep centered while framer animates y */
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 26px 16px 18px;
+  background: #0a0a0a;
+  border: 2px solid #ff6b35;
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 1px rgba(255, 107, 53, 0.25),
+    0 18px 50px -12px rgba(255, 107, 53, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  max-width: calc(100vw - 32px);
+}
+
+/* offset framer's translateX so left:50% + x animation don't fight */
+.sent-toast { left: 50%; margin-left: 0; }
+
+.sent-toast-check {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+}
+.sent-toast-check svg {
+  width: 42px;
+  height: 42px;
+}
+.stc-ring {
+  fill: none;
+  stroke: #ff6b35;
+  stroke-width: 3;
+  stroke-dasharray: 145;
+  stroke-dashoffset: 145;
+  animation: stc-ring-draw 0.5s ease forwards;
+}
+.stc-tick {
+  fill: none;
+  stroke: #ff6b35;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: stc-tick-draw 0.35s 0.4s ease forwards;
+}
+@keyframes stc-ring-draw { to { stroke-dashoffset: 0; } }
+@keyframes stc-tick-draw { to { stroke-dashoffset: 0; } }
+
+.sent-toast-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sent-toast-title {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.sent-toast-sub {
+  font-family: "Space Mono", 'Courier New', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* countdown bar — drains over 3s to mirror the auto-dismiss */
+.sent-toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, #ff6b35, #ffa676);
+  transform-origin: left;
+  animation: stc-drain 3s linear forwards;
+}
+@keyframes stc-drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* confetti burst on entry */
+.sent-toast-confetti {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.sent-toast-confetti i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: #ff6b35;
+  transform: rotate(var(--a)) translateY(0);
+  animation: stc-confetti 0.7s 0.25s ease-out forwards;
+  opacity: 0;
+}
+.sent-toast-confetti i:nth-child(even) { background: #ffd23f; }
+.sent-toast-confetti i:nth-child(3n)  { background: #25D366; }
+@keyframes stc-confetti {
+  0%   { opacity: 1; transform: rotate(var(--a)) translateY(0) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-34px) scale(0.4); }
+}
+
+@media (max-width: 640px) {
+  .sent-toast { bottom: 20px; padding: 14px 20px 14px 14px; gap: 12px; }
+  .sent-toast-title { font-size: 1.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stc-ring, .stc-tick { animation-duration: 0.01s; animation-delay: 0s; }
+  .sent-toast-confetti i { display: none; }
+}
