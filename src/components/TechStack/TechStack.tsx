@@ -15,13 +15,12 @@ interface Tech {
   color: string;
 }
 
+// Fallback monogram (shown only if a remote icon fails to load): uppercase
+// initials when there are 2+, otherwise the first two alphanumerics.
 const monogram = (name: string) => {
-  const clean = name.replace(/[^A-Za-z0-9]/g, '');
-  if (clean.length <= 2) return clean.toUpperCase();
-  // Use first two consonants or first letter + uppercase
-  const upper = name.match(/[A-Z0-9]/g);
-  if (upper && upper.length >= 2) return (upper[0] + upper[1]).toUpperCase();
-  return clean.slice(0, 2).toUpperCase();
+  const initials = name.match(/[A-Z0-9]/g);
+  if (initials && initials.length >= 2) return (initials[0] + initials[1]).toUpperCase();
+  return name.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase();
 };
 
 interface Category {
@@ -159,17 +158,12 @@ const SI_SLUGS: Record<string, string> = {
   cpp: 'cplusplus',
   html: 'html5',
   css: 'css',
-  sql: 'mysql',
   react: 'react',
   next: 'nextdotjs',
   reactnative: 'react',
   rnweb: 'react',
-  vite: 'vite',
   tailwind: 'tailwindcss',
   bootstrap: 'bootstrap',
-  styled: 'styledcomponents',
-  sass: 'sass',
-  crossplatform: 'react',
   expo: 'expo',
   ota: 'expo',
   store: 'appstore',
@@ -179,21 +173,16 @@ const SI_SLUGS: Record<string, string> = {
   zustand: 'react',
   redux: 'redux',
   query: 'reactquery',
-  context: 'react',
   node: 'nodedotjs',
   express: 'express',
   bun: 'bun',
   elysia: 'bun',
-  rest: 'fastapi',
-  jwt: 'jsonwebtokens',
   mongo: 'mongodb',
   postgres: 'postgresql',
   mysql: 'mysql',
   firebase: 'firebase',
-  aws: 'amazonwebservices',
   vercel: 'vercel',
   docker: 'docker',
-  gha: 'githubactions',
   cicd: 'githubactions',
   jest: 'jest',
   rtl: 'testinglibrary',
@@ -207,14 +196,6 @@ const SI_SLUGS: Record<string, string> = {
   responsive: 'css',
   arduino: 'arduino',
   rpi: 'raspberrypi',
-  npm: 'npm',
-  gsap: 'greensock',
-  framer: 'framer',
-  photoshop: 'adobephotoshop',
-  illustrator: 'adobeillustrator',
-  aftereffects: 'adobeaftereffects',
-  linear: 'linear',
-  graphql: 'graphql',
 };
 
 const ICON_URL_OVERRIDES: Record<string, string> = {
@@ -266,7 +247,6 @@ const TechElement = ({ tech, atomic }: { tech: Tech; atomic: number }) => {
       </span>
       <span className="el-name">{tech.name}</span>
       <span className="el-corner" aria-hidden="true" />
-      <span className="el-pulse" aria-hidden="true" />
     </article>
   );
 };

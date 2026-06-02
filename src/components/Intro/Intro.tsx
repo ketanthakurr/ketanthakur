@@ -23,6 +23,7 @@ const Intro = () => {
   const countRef = useRef<HTMLSpanElement | null>(null);
   const barRef = useRef<HTMLSpanElement | null>(null);
   const hintRef = useRef<HTMLDivElement | null>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   const [reduce] = useState(
     () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -113,6 +114,7 @@ const Intro = () => {
 
       const counter = { v: 0 };
       tl = gsap.timeline();
+      tlRef.current = tl;
       tl.to(barRef.current, { scaleX: 1, duration: 1.5, ease: 'power2.inOut' }, 0)
         .to(
           counter,
@@ -189,6 +191,7 @@ const Intro = () => {
             type="button"
             className="intro-skip"
             onClick={() => {
+              tlRef.current?.kill(); // stop the splash timeline before its DOM unmounts
               document.documentElement.classList.remove('intro-lock');
               document.body.classList.remove('intro-lock');
               setSplashDone(true);

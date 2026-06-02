@@ -19,6 +19,8 @@ const Hero = () => {
 
     let enterHandler: (() => void) | null = null;
     let leaveHandler: (() => void) | null = null;
+    let ctaEl: Element | null = null;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const ctx = gsap.context(() => {
       const heading = el.querySelector('.hero_content_heading');
@@ -49,8 +51,9 @@ const Hero = () => {
         '-=0.8'
       );
 
-      // Doodle wobble — each chip jiggles with its own irregular timing
-      chips.forEach((chip, i) => {
+      // Doodle wobble — each chip jiggles with its own irregular timing.
+      // Infinite loops run only when motion is allowed.
+      if (!prefersReduced) chips.forEach((chip, i) => {
         const baseRot = parseFloat((chip as HTMLElement).dataset.baseRot || '0');
         const rotAmp = 6 + i * 2;
         const xAmp = 5 + (i % 3) * 2;
@@ -78,7 +81,7 @@ const Hero = () => {
 
       // Scribble drift for chip3 (figure-8-ish path via keyframes)
       const chip3 = el.querySelector('.chip3');
-      if (chip3) {
+      if (chip3 && !prefersReduced) {
         gsap.to(chip3, {
           keyframes: {
             x: [0, 12, -10, -14, 0],
@@ -106,7 +109,7 @@ const Hero = () => {
 
       // Rotating circle badge — slow infinite
       const badge = el.querySelector('.hero_badge_ring');
-      if (badge) {
+      if (badge && !prefersReduced) {
         gsap.to(badge, {
           rotation: 360,
           duration: 22,
@@ -118,6 +121,7 @@ const Hero = () => {
 
       // CTA hover micro-interaction
       if (cta) {
+        ctaEl = cta;
         enterHandler = () => gsap.to(cta, { scale: 1.03, duration: 0.18 });
         leaveHandler = () => gsap.to(cta, { scale: 1, duration: 0.18 });
         cta.addEventListener('mouseenter', enterHandler);
@@ -127,9 +131,8 @@ const Hero = () => {
 
     return () => {
       ctx.revert();
-      // remove raw listeners
-      const el = sectionRef.current;
-      const ctaEl = el?.querySelector('.hero_cta');
+      // Remove the raw hover listeners from the exact node they were bound to
+      // (re-querying sectionRef.current in cleanup is unreliable).
       if (ctaEl && enterHandler && leaveHandler) {
         ctaEl.removeEventListener('mouseenter', enterHandler);
         ctaEl.removeEventListener('mouseleave', leaveHandler);

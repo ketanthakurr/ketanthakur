@@ -5,6 +5,10 @@ import './Marquee.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const ROLES = ['PRODUCT DEVELOPER', 'VISUAL STORYTELLER', 'PHOTOGRAPHER'];
+// Render the phrase twice so the -50% scroll loops seamlessly.
+const SEP = ' · ';
+
 const Marquee = () => {
   const marqueeRef = useRef<HTMLDivElement>(null);
 
@@ -34,8 +38,9 @@ const Marquee = () => {
     <section className="marquee-section">
       <div ref={marqueeRef} className="marquee-content">
         <h2 className="marquee-text">
-          PRODUCT DEVELOPER &nbsp;·&nbsp; VISUAL STORYTELLER &nbsp;·&nbsp; PHOTOGRAPHER &nbsp;·&nbsp;
-          PRODUCT DEVELOPER &nbsp;·&nbsp; VISUAL STORYTELLER &nbsp;·&nbsp; PHOTOGRAPHER &nbsp;·&nbsp;
+          {[...ROLES, ...ROLES].map((role, i) => (
+            <span key={i}>{role}{SEP}</span>
+          ))}
         </h2>
       </div>
     </section>

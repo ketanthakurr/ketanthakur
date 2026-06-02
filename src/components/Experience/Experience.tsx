@@ -169,10 +169,11 @@ const Experience = () => {
           }
         });
 
-        cards.forEach((c, i) => c.classList.toggle('is-active', i === best));
-
         if (best !== activeIdx) {
           activeIdx = best;
+          // Only rewrite the DOM when the centered card actually changes —
+          // not on every scrub frame.
+          cards.forEach((c, i) => c.classList.toggle('is-active', i === best));
           const item = timeline[best];
           if (ghostRef.current) ghostRef.current.textContent = item.year;
           if (counterRef.current) counterRef.current.textContent = pad(best + 1);

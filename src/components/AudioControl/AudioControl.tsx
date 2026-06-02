@@ -26,16 +26,16 @@ const isInteractive = (el: Element | null) =>
   !!el?.closest('a, button, [data-sound], input, textarea, .magnetic');
 
 const AudioControl = () => {
-  const [enabled, setEnabled] = useState(false);
+  // Restore saved preference at mount (default off; never auto-on under reduced motion).
+  // Lazy initializer avoids a setState-in-effect cascade and a flash of the wrong state.
+  const [enabled, setEnabled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return !reduced && localStorage.getItem(STORAGE_KEY) === 'on';
+  });
   const ctxRef = useRef<AudioContext | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const lastHover = useRef(0);
-
-  // Restore preference (default off). Skip if user prefers reduced motion.
-  useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduced && localStorage.getItem(STORAGE_KEY) === 'on') setEnabled(true);
-  }, []);
 
   // Drive ambient loop + persist whenever `enabled` changes.
   useEffect(() => {

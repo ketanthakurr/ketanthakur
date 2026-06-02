@@ -42,12 +42,13 @@
     font-size: 4rem;
   }
 }
-@media (max-width: 768px) {
+
+@media (max-width: 480px) {
   .marquee-section {
-    padding: 2rem 0;
+    padding: 3rem 0;
   }
 
   .marquee-text {
-    font-size: 1rem;
+    font-size: 3rem;
   }
 }

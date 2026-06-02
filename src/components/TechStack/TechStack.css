@@ -207,11 +207,6 @@
   transition: color 0.3s ease;
 }
 
-/* Idle pulse — kept inert (no infinite animation, removed for perf) */
-.el-pulse {
-  display: none;
-}
-
 .el-corner {
   position: absolute;
   top: 0;
@@ -255,11 +250,6 @@
   border-width: 0 16px 16px 0;
   border-color: transparent #fff transparent transparent;
   opacity: 1;
-}
-
-.el:hover .el-pulse {
-  animation: none;
-  opacity: 0;
 }
 
 /* Bounce-press feedback */

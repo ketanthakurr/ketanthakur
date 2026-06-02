@@ -257,6 +257,7 @@ const Contact = () => {
   const [showToast, setShowToast] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -265,6 +266,24 @@ const Contact = () => {
     if (!WEB3FORMS_ACCESS_KEY) {
       setStatus("error");
       setErrorMsg("Form not configured. Set VITE_WEB3FORMS_KEY.");
+      return;
+    }
+
+    // Honeypot: a hidden field no human can see. If it's filled, it's a bot —
+    // fake success and never hit the network.
+    if (honeypotRef.current?.value) {
+      setStatus("ok");
+      setForm({ name: "", email: "", message: "" });
+      return;
+    }
+
+    // Normalize input before sending.
+    const name = form.name.trim();
+    const email = form.email.trim();
+    const message = form.message.trim();
+    if (!name || !email || !message) {
+      setStatus("error");
+      setErrorMsg("Please fill in every field.");
       return;
     }
 
@@ -277,10 +296,11 @@ const Contact = () => {
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          name: form.name,
-          email: form.email,
-          message: form.message,
-          subject: `Portfolio contact — ${form.name}`,
+          name,
+          email,
+          message,
+          replyto: email,
+          subject: `Portfolio contact — ${name}`,
           from_name: "Portfolio Contact Form",
         }),
       });
@@ -372,11 +392,21 @@ const Contact = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="contact-form">
+            {/* Honeypot — hidden from real users; bots that fill it are dropped */}
+            <input
+              ref={honeypotRef}
+              type="text"
+              name="company"
+              className="hp-field"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
             <div className="form-row form-row-2">
               <div className="form-group">
                 <label>Name</label>
                 <input
-                  type="text" required
+                  type="text" required maxLength={80}
                   placeholder="Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -387,7 +417,7 @@ const Contact = () => {
               <div className="form-group">
                 <label>Email</label>
                 <input
-                  type="email" required
+                  type="email" required maxLength={120}
                   placeholder="email@example.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -399,7 +429,7 @@ const Contact = () => {
             <div className="form-group">
               <label>Tell me about it</label>
               <textarea
-                required
+                required maxLength={1500}
                 rows={3}
                 placeholder="A new product, a weird side-project, a redesign that scares you…"
                 value={form.message}

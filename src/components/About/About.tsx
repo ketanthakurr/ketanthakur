@@ -12,6 +12,9 @@ const About = () => {
   const peeperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Respect reduced-motion: skip eye-tracking, blink, and parallax entirely.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     let raf = 0;
     let tlx = 0, tly = 0, trx = 0, try_ = 0;
     let lx = 0, ly = 0, rx = 0, ry = 0;
@@ -45,9 +48,10 @@ const About = () => {
     tick();
 
     // Blink loop
+    let blinkTimeout: ReturnType<typeof setTimeout>;
     const blink = setInterval(() => {
       peeperRef.current?.classList.add('peeper-blink');
-      setTimeout(() => peeperRef.current?.classList.remove('peeper-blink'), 160);
+      blinkTimeout = setTimeout(() => peeperRef.current?.classList.remove('peeper-blink'), 160);
     }, 5200);
 
     window.addEventListener('mousemove', onMove);
@@ -90,6 +94,7 @@ const About = () => {
     return () => {
       cancelAnimationFrame(raf);
       clearInterval(blink);
+      clearTimeout(blinkTimeout);
       window.removeEventListener('mousemove', onMove);
       ctx.revert();
     };
@@ -120,7 +125,7 @@ const About = () => {
           <h2 className="about-title">ABOUT ME</h2>
           <p className="about-description">
             I&apos;m a developer and creator, shaping ideas into digital experiences.
-            With over a year of experience, I&apos;ve helping brands and companies transform their ideas into experiences.
+            With over a year of experience, I&apos;ve been helping brands and companies turn their ideas into reality.
           </p>
         </div>
         <div className="about-image">

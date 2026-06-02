@@ -100,11 +100,12 @@ const Cursor = () => {
     const onDown = () => bubble.classList.add('c-down');
     const onUp = () => bubble.classList.remove('c-down');
 
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseover', onOver);
-    window.addEventListener('mouseleave', onLeave);
-    document.addEventListener('mousedown', onDown);
-    document.addEventListener('mouseup', onUp);
+    // All handlers are read-only (never preventDefault) → safe to mark passive.
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('mouseover', onOver, { passive: true });
+    window.addEventListener('mouseleave', onLeave, { passive: true });
+    document.addEventListener('mousedown', onDown, { passive: true });
+    document.addEventListener('mouseup', onUp, { passive: true });
 
     document.body.classList.add('has-custom-cursor');
 
@@ -122,6 +123,7 @@ const Cursor = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
+      clearReveal(); // don't leave a heading stuck in its revealed state
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
       window.removeEventListener('mouseleave', onLeave);

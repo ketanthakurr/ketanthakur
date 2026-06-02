@@ -1,10 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Header.css';
+
+const NAV_LINKS = [
+  { href: '#hero', label: 'Home' },
+  { href: '#about', label: 'About' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#photography', label: 'Gallery' },
+  { href: '#contact', label: 'Contact' },
+];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuOrigin, setMenuOrigin] = useState({ x: '50%', y: '2rem' });
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Full-width while on the intro + hero; floats once you scroll past the hero.
@@ -23,11 +33,30 @@ const Header = () => {
     };
   }, []);
 
+  // While the mobile menu is open: lock body scroll, close on Escape, and move
+  // focus into the overlay (restoring it to the hamburger on close).
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const hamburger = hamburgerRef.current; // stable node; capture for the cleanup
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeBtnRef.current?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+      hamburger?.focus();
+    };
+  }, [isMenuOpen]);
+
   const openMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    setMenuOrigin({ x: `${x}px`, y: `${y}px` });
+    setMenuOrigin({ x: `${rect.left + rect.width / 2}px`, y: `${rect.top + rect.height / 2}px` });
     setIsMenuOpen(true);
   };
 
@@ -41,13 +70,18 @@ const Header = () => {
             <span>Ketan Thakur</span>
           </div>
           <nav className="nav">
-            <a href="#hero">Home</a>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#photography">Gallery</a>
-            <a href="#contact">Contact</a>
+            {NAV_LINKS.map((link) => (
+              <a key={link.href} href={link.href}>{link.label}</a>
+            ))}
           </nav>
-          <button className="hamburger" onClick={openMenu}>
+          <button
+            ref={hamburgerRef}
+            className="hamburger"
+            onClick={openMenu}
+            aria-label="Open menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+          >
             <span></span>
             <span></span>
             <span></span>
@@ -55,17 +89,22 @@ const Header = () => {
         </div>
       </header>
 
-      <div 
+      <div
+        id="mobile-menu"
         className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}
+        aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
         style={{
-          clipPath: isMenuOpen 
-            ? `circle(150% at ${menuOrigin.x} ${menuOrigin.y})` 
+          clipPath: isMenuOpen
+            ? `circle(150% at ${menuOrigin.x} ${menuOrigin.y})`
             : `circle(0% at ${menuOrigin.x} ${menuOrigin.y})`
         }}
       >
-        <button 
-          className="close-btn" 
+        <button
+          ref={closeBtnRef}
+          className="close-btn"
           onClick={closeMenu}
+          aria-label="Close menu"
           style={{ left: menuOrigin.x, top: menuOrigin.y }}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -73,11 +112,9 @@ const Header = () => {
           </svg>
         </button>
         <nav className="mobile-nav">
-          <a href="#hero" onClick={closeMenu}>Home</a>
-          <a href="#about" onClick={closeMenu}>About</a>
-          <a href="#projects" onClick={closeMenu}>Projects</a>
-          <a href="#photography" onClick={closeMenu}>Gallery</a>
-          <a href="#contact" onClick={closeMenu}>Contact</a>
+          {NAV_LINKS.map((link) => (
+            <a key={link.href} href={link.href} onClick={closeMenu}>{link.label}</a>
+          ))}
         </nav>
       </div>
     </>

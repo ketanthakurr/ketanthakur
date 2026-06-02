@@ -564,6 +564,16 @@
   }
 }
 
+/* Honeypot — visually removed but still fillable by bots */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ── Form submit status ── */
 .form-status {
   margin: 0.85rem 0 0;
@@ -571,7 +581,6 @@
   font-weight: 600;
   line-height: 1.4;
 }
-.form-status-ok { color: #25D366; }
 .form-status-error { color: #EA4335; }
 .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 

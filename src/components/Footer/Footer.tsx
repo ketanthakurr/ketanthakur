@@ -44,10 +44,10 @@ const Footer = () => {
           <a href="https://instagram.com/_ketanthakur" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
           <a href="https://wa.me/918448721488" target="_blank" rel="noopener noreferrer">WHATSAPP</a>
           <a href="https://x.com/_ketanthakur" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://linkedin.com/ketanthakurr" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          <a href="https://www.linkedin.com/in/ketanthakurr/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
         </div>
         <div className="footer-copyright">
-          © KETAN 2025 ALL RIGHTS RESERVED
+          © KETAN {new Date().getFullYear()} ALL RIGHTS RESERVED
         </div>
       </div>
       <div className="footer-name">KETAN</div>

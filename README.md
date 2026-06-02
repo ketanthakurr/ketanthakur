@@ -1,73 +1,107 @@
-# React + TypeScript + Vite
+# Ketan Thakur — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A bold, motion-driven personal portfolio. Built with React 19, TypeScript, and Vite, with a brutalist-playful aesthetic — condensed display type, an orange/black palette, a custom cursor, ambient audio, and animated section reveals.
 
-Currently, two official plugins are available:
+🌐 **Live:** [ketanthakur.me](https://ketanthakur.me)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Layer       | Choice                          |
+| ----------- | ------------------------------- |
+| Framework   | React 19                        |
+| Language    | TypeScript                      |
+| Build tool  | Vite 7                          |
+| Animation   | Framer Motion + GSAP            |
+| Forms       | [Web3Forms](https://web3forms.com) (serverless email) |
+| Hosting     | GitHub Pages (custom domain)    |
+| CI/CD       | GitHub Actions                  |
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Intro preloader** — animated percentage counter with a name-zoom reveal.
+- **Custom cursor** — replaces the native pointer site-wide.
+- **Ambient audio** — toggleable background loop plus synthesized UI tick FX (Web Audio, no sound files needed). Respects `prefers-reduced-motion`.
+- **Scroll-reveal sections** — Hero, About, Experience, Tech Stack, Projects, Gallery, Testimonials.
+- **Contact form** — sends real email via Web3Forms; cursor-tracking mascot, success toast that auto-dismisses in 3s, and graceful error states.
+- **Accessibility** — reduced-motion fallbacks and ARIA live regions on form status.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+```bash
+# install
+npm install
+
+# dev server (http://localhost:5173)
+npm run dev
+
+# production build
+npm run build
+
+# preview the build
+npm run preview
+
+# lint
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The contact form uses Web3Forms. Copy the example env and add your access key (free at [web3forms.com](https://web3forms.com)):
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+```env
+VITE_WEB3FORMS_KEY=your-access-key-here
+```
+
+> The Web3Forms access key is sent from the browser by design, so it is **not a secret** — it is safe in the client bundle. For deploys, the same value is provided to the build via the GitHub Actions secret `VITE_WEB3FORMS_KEY`.
+
+---
+
+## Project Structure
+
+```
+src/
+├── App.tsx               # composes all sections
+└── components/
+    ├── Intro/            # preloader + name-zoom reveal
+    ├── Header/           # nav
+    ├── Hero/             # landing
+    ├── Marquee/          # scrolling banner
+    ├── About/
+    ├── Experience/
+    ├── TechStack/
+    ├── Projects/
+    ├── Gallery/
+    ├── Testimonials/
+    ├── Contact/          # mascot + Web3Forms form + success toast
+    ├── Footer/
+    ├── Cursor/           # custom cursor
+    ├── AudioControl/     # ambient audio + UI FX
+    └── ScrollReveal/     # scroll-triggered animation helper
+```
+
+---
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds the site and deploys `dist/` to GitHub Pages. The custom domain (`ketanthakur.me`) is configured via the `CNAME` file.
+
+To deploy with a working contact form, add the access key as a repository secret:
+
+> **Settings → Secrets and variables → Actions → New repository secret**
+> Name: `VITE_WEB3FORMS_KEY` · Value: your Web3Forms key
+
+---
+
+## License
+
+Personal project — all rights reserved. Feel free to draw inspiration, but please don't clone it wholesale.
